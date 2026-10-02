@@ -337,6 +337,7 @@ h1 em {
   padding: 20px 16px;
   background: #eeeee6;
   border: 1px solid transparent;
+  text-align: center;
   transition: transform .2s,border-color .2s;
 }
 
@@ -481,6 +482,72 @@ h1 em {
   color: var(--accent);
 }
 
+.friend-profile {
+  max-width: 680px;
+  margin: 45px auto 65px;
+  min-height: 55vh;
+}
+
+.friend-profile-header {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 25px;
+  align-items: center;
+  margin-top: 38px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.friend-profile-avatar {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#719ce8,#a97ad8 60%,#d98bbd);
+  box-shadow: 0 12px 30px #9272c028;
+  color: #fff;
+  font: 600 22px monospace;
+}
+
+.friend-profile-header h1 {
+  margin: 5px 0 0;
+  font-size: 36px;
+  line-height: 1.4;
+}
+
+.friend-profile-header p {
+  margin: 3px 0 0;
+  color: var(--muted);
+}
+
+.friend-profile-about {
+  margin-top: 30px;
+  padding: 26px 28px;
+  border: 1px solid #ffffffa6;
+  border-radius: 10px;
+  background: linear-gradient(145deg,#e6efff80,#eee3ff80 58%,#ffe5f080);
+}
+
+.friend-profile-about h2 {
+  margin: 2px 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.friend-profile-about p {
+  margin: 0;
+  color: #716981;
+  line-height: 2;
+}
+
+.friend-homepage {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--accent);
+  font-size: 12px;
+}
+
 .contact-section {
   border-bottom: 0;
 }
@@ -519,9 +586,25 @@ a.contact-card:hover {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: linear-gradient(135deg,#719ce8,#a97ad8 60%,#d98bbd);
-  color: #fff;
-  font: 600 11px monospace;
+  border: 1px solid #d9ccec;
+  background: linear-gradient(145deg,#f0f5ff,#f4edff 58%,#fff0f6);
+  color: #8461b7;
+}
+
+.contact-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contact-icon-qq svg,
+.contact-icon-github svg {
+  width: 22px;
+  height: 22px;
 }
 
 .contact-label {
@@ -776,6 +859,29 @@ input[type=search] {
     grid-template-columns: 1fr;
   }
 
+  .friend-profile {
+    margin-top: 30px;
+  }
+
+  .friend-profile-header {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .friend-profile-avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 17px;
+  }
+
+  .friend-profile-header h1 {
+    font-size: 28px;
+  }
+
+  .friend-profile-about {
+    padding: 22px;
+  }
+
   .section-head>span {
     letter-spacing: 1px;
     font-size: 9px;
@@ -916,7 +1022,14 @@ input[type=search] {
 }
 
 .hero {
-  padding-right: 195px;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 42px;
+  align-items: center;
+}
+
+.hero-content {
+  min-width: 0;
 }
 
 .hero h1 {
@@ -924,17 +1037,13 @@ input[type=search] {
 }
 
 .portrait {
-  position: absolute;
-  right: 0;
-  top: 70px;
-  width: 155px;
-  text-align: center;
+  width: 180px;
 }
 
 .portrait-photo {
   display: block;
-  width: 155px;
-  height: 194px;
+  width: 180px;
+  height: 225px;
   border: 2px solid #ffffffcc;
   border-radius: 16px;
   object-fit: cover;
@@ -948,27 +1057,19 @@ input[type=search] {
   box-shadow: 0 18px 42px #7554a83d, 0 0 0 1px #aa89d966;
 }
 
-.portrait-caption {
-  display: block;
-  margin-top: 12px;
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: var(--muted);
-}
-
 @media(max-width:1050px) and (min-width:721px) {
   .hero {
-    padding-right: 135px;
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: 30px;
   }
 
   .portrait {
-    width: 115px;
-    top: 85px;
+    width: 130px;
   }
 
   .portrait-photo {
-    width: 115px;
-    height: 144px;
+    width: 130px;
+    height: 163px;
   }
 
   .hero h1 {
@@ -984,7 +1085,9 @@ input[type=search] {
 
 @media(max-width:720px) {
   .hero {
-    padding-right: 0;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
   }
 
   .hero h1 {
@@ -992,20 +1095,13 @@ input[type=search] {
   }
 
   .portrait {
-    position: static;
-    width: 100px;
-    margin: 25px 0 0;
-    text-align: left;
+    width: 120px;
   }
 
   .portrait-photo {
-    width: 100px;
-    height: 125px;
+    width: 120px;
+    height: 150px;
     border-radius: 12px;
-  }
-
-  .portrait-caption {
-    display: none;
   }
 
 }
