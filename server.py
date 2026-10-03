@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent
-ROUTE = re.compile(r"/(?:Home|Diary|Friends|Post/[^/]+|Friend/[^/]+)/?", re.IGNORECASE)
+ROUTE = re.compile(r"/(?:Home|Diary|Journey|Friends|Projects|Post/[^/]+|Friend/[^/]+)/?", re.IGNORECASE)
 
 
 class BlogHandler(SimpleHTTPRequestHandler):

@@ -3,7 +3,7 @@
 // 本文件同时负责好友卡片渲染，以及日记筛选、搜索和文章导航。
 
 // 页面元素与筛选状态。
-const viewNames = ["home", "friends", "friend", "diary", "article"];
+const viewNames = ["home", "journey", "friends", "friend", "projects", "diary", "article"];
 const navigationLinks = document.querySelectorAll("[data-nav]");
 const filterButtons = document.querySelectorAll("[data-filter]");
 const searchInput = document.getElementById("search");
@@ -105,24 +105,15 @@ function renderPostCard(post) {
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <span class="tag">${escapeHtml(post.category)}</span>
       </div>
-      <h3>${escapeHtml(post.title)} <span aria-hidden="true">↗</span></h3>
+      <h3>${escapeHtml(post.title)}</h3>
       <p>${escapeHtml(post.excerpt)}</p>
     </a>
   `;
 }
 
-// 首页与侧边栏共用同一份日记数据。
+// 首页展示最新三篇日记；侧边栏的重大事件在 HTML 中单独维护。
 function renderRecentPosts() {
   const recentPosts = diaries.slice(0, 3);
-  document.getElementById("side-posts").innerHTML = recentPosts.map(post => `
-    <a class="side-post" href="${postLink(post)}">
-      <time datetime="${escapeHtml(post.date)}">
-        ${escapeHtml(post.date.replaceAll("-", "."))} / ${escapeHtml(post.category)}
-      </time>
-      <p>${escapeHtml(post.title)} ↗</p>
-    </a>
-  `).join("");
-
   document.getElementById("recent-posts").innerHTML = recentPosts
     .map(renderPostCard).join("");
 }
@@ -148,6 +139,17 @@ function renderFriends() {
   document.getElementById("all-friends-list").innerHTML = friends.map(renderFriendCard).join("");
   document.getElementById("friends-count").textContent = friends.length;
   document.getElementById("friends-empty").hidden = friends.length !== 0;
+}
+
+function renderSkills() {
+  document.getElementById("skills-groups").innerHTML = skillGroups.map(group => `
+    <section class="skills-section" aria-labelledby="${escapeHtml(group.id)}-title">
+      <h3 id="${escapeHtml(group.id)}-title">${escapeHtml(group.title)}</h3>
+      <div class="skills">
+        ${group.items.map(item => `<span>${escapeHtml(item)}</span>`).join("")}
+      </div>
+    </section>
+  `).join("");
 }
 
 function renderFriendProfile(friend) {
@@ -217,7 +219,9 @@ function updateNavigation(view) {
   const isDiaryView = view === "diary" || view === "article";
   const activeNavigation = isDiaryView
     ? "diary"
+    : view === "journey" ? "journey"
     : (view === "friends" || view === "friend") ? "friends"
+    : view === "projects" ? "projects"
     : "home";
 
   navigationLinks.forEach(link => {
@@ -234,7 +238,11 @@ function updateNavigation(view) {
 // 使用 History API；server.py 为直接访问、刷新及新标签页提供路由回退。
 // 兼容旧的 #home、#diary、#friends、#post/... 等链接。
 function route() {
-  const legacy = location.hash.slice(1);
+  const rawHash = location.hash.slice(1);
+  const legacy = /^(?:home|diary|journey|friends|projects|post(?:\/|$)|friend(?:\/|$))/i.test(rawHash)
+    ? rawHash
+    : "";
+  const anchor = legacy ? "" : rawHash.toLowerCase();
   const [path, query = ""] = legacy
     ? legacy.split("?")
     : (location.pathname.replace(/^\/+|\/+$/g, "") + location.search).split("?");
@@ -255,6 +263,10 @@ function route() {
     updateFilters();
   } else if (hash === "friends") {
     view = "friends";
+  } else if (hash === "journey") {
+    view = "journey";
+  } else if (hash === "projects") {
+    view = "projects";
   } else if (hash === "friend") {
     friendIndex = friends.findIndex(friend => encodeURIComponent(friend.id) === id);
     view = friendIndex >= 0 ? "friend" : "friends";
@@ -271,18 +283,22 @@ function route() {
   if (view === "diary") renderArchive();
   if (view === "article") renderArticle(postIndex, params.get("page") || 1);
   if (view === "friend") renderFriendProfile(friends[friendIndex]);
-  if (view === "home") replaceAddress("/Home");
+  if (view === "home") replaceAddress(anchor ? `/Home#${anchor}` : "/Home");
+  if (view === "journey") replaceAddress("/Journey");
   if (view === "friends") replaceAddress("/Friends");
+  if (view === "projects") replaceAddress("/Projects");
   if (view === "friend") replaceAddress(friendLink(friends[friendIndex]));
 
   const title = view === "article" ? diaries[postIndex].title
     : view === "friend" ? `${friends[friendIndex].name} · 好友简介`
     : view === "friends" ? "我的好友"
+    : view === "journey" ? "成长轨迹"
+    : view === "projects" ? "个人项目"
     : view === "diary" ? "全部日记" : "个人博客";
   document.title = `${title} · 黄敏津`;
 
-  if (hash === "about") {
-    document.getElementById("about").scrollIntoView();
+  if (view === "home" && ["about", "contact"].includes(anchor)) {
+    document.getElementById(anchor).scrollIntoView();
   } else {
     window.scrollTo(0, 0);
   }
@@ -299,12 +315,9 @@ function updateFilters() {
 function initialize() {
   renderRecentPosts();
   renderFriends();
+  renderSkills();
+  renderJourney(document.getElementById("timeline"), escapeHtml);
   document.getElementById("year").textContent = new Date().getFullYear();
-  const latestDate = diaries.map(post => post.date).sort().at(-1);
-  document.getElementById("archive-summary").innerHTML = `
-    <div><dt>记录总数</dt><dd>${diaries.length}<small> 篇</small></dd></div>
-    <div><dt>记录分类</dt><dd>${new Set(diaries.map(post => post.category)).size}<small> 类</small></dd></div>
-    <div class="summary-update"><dt>最近更新</dt><dd>${escapeHtml(latestDate || "暂无日记")}</dd></div>`;
 
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -326,9 +339,9 @@ function initialize() {
       || event.shiftKey || event.altKey || link.hasAttribute("download")
       || (link.target && link.target !== "_self")) return;
     const url = new URL(link.href, location.href);
-    if (url.origin !== location.origin || !/^\/(Home|Diary|Friends|Post\/[^/]+|Friend\/[^/]+)\/?$/i.test(url.pathname)) return;
+    if (url.origin !== location.origin || !/^\/(Home|Diary|Journey|Friends|Projects|Post\/[^/]+|Friend\/[^/]+)\/?$/i.test(url.pathname)) return;
     event.preventDefault();
-    const address = url.pathname + url.search;
+    const address = url.pathname + url.search + url.hash;
     if (currentAddress() !== address) history.pushState(null, "", address);
     route();
   });

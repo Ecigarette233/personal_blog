@@ -9,13 +9,13 @@
     <meta name="theme-color" content="#f6f5ff">
     <title>黄敏津 · 个人博客</title>
     <base href="/">
-    <link rel="stylesheet" href="styles.css?v=20261003-4">
+    <link rel="stylesheet" href="styles.css?v=20261003-26">
   </head>
   <body>
     <div class="shell">
       <aside class="sidebar" aria-label="博客侧边栏">
-        <a class="brand" href="/Home" aria-label="返回首页">黄敏津</a>
-        <p class="tiny brand-sub">A PERSONAL JOURNAL</p>
+        <a class="brand" href="/Home" aria-label="返回首页">个人博客</a>
+        <p class="tiny brand-sub">PERSONAL BLOG</p>
         <nav class="nav" aria-label="主导航">
           <a href="/Home" data-nav="home">
             首页
@@ -29,46 +29,68 @@
             好友
             <span class="nav-number">03</span>
           </a>
+          <a href="/Journey" data-nav="journey">
+            成长轨迹
+            <span class="nav-number">04</span>
+          </a>
+          <a href="/Projects" data-nav="projects">
+            个人项目
+            <span class="nav-number">05</span>
+          </a>
         </nav>
         <div class="side-heading">
-          <span>最近的日记</span>
-          <a href="/Diary">全部 ↗</a>
+          <span>重大事件</span>
         </div>
-        <div class="side-posts" id="side-posts">
+        <div class="side-posts" aria-label="重大事件">
+          <a class="side-post" href="/Post/build-a-personal-blog">
+            <time datetime="2026-10">2026.10 / 日记</time>
+            <p>个人博客搭建记录</p>
+          </a>
+          <a class="side-post" href="/Projects">
+            <time datetime="2026">2026 / 项目</time>
+            <p>个人项目持续更新</p>
+          </a>
         </div>
         <div class="side-bottom">
-          <p>
-            <span class="status-dot">
+          <div class="side-contact">
+            <span class="side-contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
             </span>
-            计算机科学与技术
-          </p>
-          <span class="tiny">SHENZHEN / GUANGZHOU</span>
+            <span class="side-contact-copy">
+              <small>联系我 / CONTACT</small>
+              <strong>huangminijn2007@gmail.com</strong>
+            </span>
+          </div>
         </div>
       </aside>
       <main class="main" id="main">
         <div class="topbar">
-          <span>个人博客 / PERSONAL BLOG</span>
+          <div class="topbar-heading">
+            <span class="topbar-copy">本站记录技术学习、实践过程与个人日常。</span>
+          </div>
           <span>SINCE 2026</span>
         </div>
         <div id="home-view" class="fade-in">
           <header class="hero">
-            <div class="hero-content">
-              <div class="eyebrow">PROFILE / 个人简介</div>
-              <h1>黄敏津</h1>
-              <p class="hero-identity">广州大学 · 计算机科学与技术 · 大二</p>
-              <p class="hero-copy">本站记录技术学习、实践过程与个人日常。</p>
-              <div class="hero-foot">
-                <span>
-                  <span class="status-dot">
-                  </span>
-                  广东 · 深圳
-                </span>
-                <a href="/Diary">查看日记 ↗</a>
-              </div>
-            </div>
+            <div class="eyebrow">PROFILE / 个人简介</div>
             <div class="portrait">
               <img class="portrait-photo" src="images/profile-avatar.png" alt="黄敏津的头像">
             </div>
+            <div class="hero-content">
+              <h1>黄敏津</h1>
+              <div class="hero-tagline">
+                <p><span>理想岗位</span><strong>后端开发 / AI</strong></p>
+                <p><span>目标</span><strong>35 岁退休</strong></p>
+              </div>
+            </div>
+            <dl class="hero-facts" aria-label="个人基本信息">
+              <div><dt>学校</dt><dd>广州大学</dd></div>
+              <div><dt>专业</dt><dd>计算机科学与技术</dd></div>
+              <div><dt>年级</dt><dd>大二</dd></div>
+              <div><dt>年龄</dt><dd>19 岁</dd></div>
+              <div><dt>坐标</dt><dd>广东 · 深圳</dd></div>
+              <div><dt>正在做</dt><dd>编程与 408 学习</dd></div>
+            </dl>
           </header>
           <section class="section" id="about">
             <div class="section-head">
@@ -77,72 +99,17 @@
                 关于我
               </h2>
             </div>
-            <div class="about-grid">
+            <div class="about-flow">
               <div class="about-copy">
                 <p>
-                  我是
-                  <strong>黄敏津</strong>
-                  。目前就读于
-                  <strong>广州大学</strong>
-                  ，学习计算机科学与技术。
+                  我是黄敏津，来自广东深圳，计算机专业。
                 </p>
                 <p>
                   目前正在学习 C++、数据结构与算法、计算机组成原理、计算机网络，同时进行 Web 开发实践。
                 </p>
                 <p>未来计划学习 Java，向后端开发 + AI 方向深入。</p>
               </div>
-              <dl class="profile">
-                <div>
-                  <dt>学校</dt>
-                  <dd>广州大学</dd>
-                </div>
-                <div>
-                  <dt>专业</dt>
-                  <dd>计算机科学与技术</dd>
-                </div>
-                <div>
-                  <dt>年级</dt>
-                  <dd>大二</dd>
-                </div>
-                <div>
-                  <dt>年龄</dt>
-                  <dd>19 岁</dd>
-                </div>
-                <div>
-                  <dt>坐标</dt>
-                  <dd>广东 · 深圳</dd>
-                </div>
-                <div>
-                  <dt>正在做</dt>
-                  <dd>编程与408学习</dd>
-                </div>
-              </dl>
-            </div>
-            <div class="skills-groups">
-            <section class="skills-section" aria-labelledby="skills-title">
-              <h3 id="skills-title">技术栈</h3>
-              <div class="skills">
-              <span>C / C++</span>
-              <span>Python</span>
-              <span>Java（学习计划）</span>
-              <span>JavaScript</span>
-              <span>HTML / CSS</span>
-              <span>Git</span>
-              <span>VS Code</span>
-              <span>Linux</span>
-              <span>Markdown</span>
-              </div>
-            </section>
-            <section class="skills-section" aria-labelledby="courses-title">
-              <h3 id="courses-title">专业课</h3>
-              <div class="skills">
-              <span>数据结构与算法</span>
-              <span>计算机组成原理</span>
-              <span>计算机网络</span>
-              <span>计算机操作系统</span>
-              <span>数据库原理</span>
-              </div>
-            </section>
+              <div class="skills-groups" id="skills-groups"></div>
             </div>
           </section>
           <section class="section">
@@ -216,7 +183,7 @@
             <div id="recent-posts">
             </div>
           </section>
-          <section class="section contact-section">
+          <section class="section contact-section" id="contact">
             <div class="section-head">
               <h2>
                 <span>05 /</span>
@@ -269,14 +236,33 @@
             </div>
           </section>
         </div>
+        <section id="journey-view" hidden class="fade-in journey-page">
+          <header class="page-header journey-header">
+            <div class="eyebrow">JOURNEY / 成长轨迹</div>
+            <h1>成长轨迹</h1>
+          </header>
+          <div class="timeline" id="timeline" aria-label="成长轨迹时间轴"></div>
+        </section>
         <section id="friends-view" hidden class="fade-in friends-page">
-          <header class="friends-header">
+          <header class="page-header friends-header">
             <div class="eyebrow">FRIENDS / 好友</div>
             <h1>我的好友</h1>
             <p>共 <span id="friends-count">0</span> 位好友，点击卡片了解 TA。</p>
           </header>
           <div class="friends-grid" id="all-friends-list"></div>
           <p class="empty" id="friends-empty" hidden>暂时还没有添加好友。</p>
+        </section>
+        <section id="projects-view" hidden class="fade-in projects-page">
+          <header class="page-header projects-header">
+            <div class="eyebrow">PROJECTS / 个人项目</div>
+            <h1>个人项目</h1>
+            <p>这里将记录正在开发和已经完成的作品。</p>
+          </header>
+          <div class="projects-placeholder">
+            <span class="tiny">05 / PROJECTS</span>
+            <h2>项目内容准备中</h2>
+            <p>后续项目会在这里逐步补充，并可从侧边栏的重大事件直接进入。</p>
+          </div>
         </section>
         <section id="friend-view" hidden class="fade-in">
           <article class="friend-profile">
@@ -300,13 +286,9 @@
           </article>
         </section>
         <section id="diary-view" hidden class="fade-in">
-          <header class="archive-header">
-            <div>
-            <div class="eyebrow">THE JOURNAL</div>
+          <header class="page-header archive-header">
+            <div class="eyebrow">JOURNAL / 日记</div>
             <h1>全部日记</h1>
-            <p>按分类浏览记录，或搜索标题与正文。</p>
-            </div>
-            <dl class="archive-summary" id="archive-summary" aria-label="日记概览"></dl>
           </header>
           <div class="archive-tools">
             <div class="filters" aria-label="日记分类">
@@ -350,7 +332,9 @@
     </div>
     <script src="diaries.js?v=20261003-2" defer></script>
     <script src="friends.js?v=20261003-2" defer></script>
-    <script src="blog.js?v=20261003-2" defer></script>
+    <script src="journey.js?v=20261003-3" defer></script>
+    <script src="skills.js?v=20261003-1" defer></script>
+    <script src="blog.js?v=20261003-6" defer></script>
   </body>
 </html>
 
