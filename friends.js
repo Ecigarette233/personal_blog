@@ -15,8 +15,8 @@ const friends = [
     url: " "
   },
   {
-    id: "ha-deng",
-    showOnHome: true,
+    id: "deng-anting",
+    showOnHome: false,
     name: "邓安廷",
     avatar: "DAT",
     description: "邓哥、哈邓",
@@ -40,5 +40,23 @@ const friends = [
     description: "东京开墓尸",
     bio: "陈梓健必玩榜top1",
     url: " "
-  }
+  },
+  {
+    id: "fang-haoming",
+    showOnHome: true,
+    name: "方浩明",
+    avatar: "FHM",
+    description: "牢八、网安最后的深情",
+    bio: "初中同学、大学同学",
+    url: " "
+  },
+  {
+    id: "cao-sihan",
+    showOnHome: false,
+    name: "Niger",
+    avatar: "N",
+    description: "大内哥",
+    bio: "初中同学、香港人",
+    url: " "
+  },
 ];
