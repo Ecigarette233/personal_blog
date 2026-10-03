@@ -7,6 +7,11 @@
   --line: #ddd8ef;
   --accent: #8d55d7;
   --sage: #eae4fa;
+  scrollbar-gutter: stable;
+}
+
+html {
+  overflow-y: scroll;
 }
 
 * {
@@ -97,6 +102,7 @@ button: focus-visible,a:focus-visible,input:focus-visible {
 
 .nav a {
   padding: 10px 14px;
+  border-bottom: 1px solid transparent;
   border-radius: 5px;
   display: flex;
   align-items: center;
