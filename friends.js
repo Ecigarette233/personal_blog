@@ -58,5 +58,5 @@ const friends = [
     description: "大内哥",
     bio: "初中同学、香港人",
     url: " "
-  },
+  }
 ];
