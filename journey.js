@@ -10,13 +10,13 @@ const journeyEvents = [
   {
     date: "2026-06",
     title: "英语六级 548 分",
-    description: "完成大学英语六级考试，为后续英语学习建立新的起点。",
+    description: "通过大学英语六级，为后续英语学习建立新的起点。",
     type: "成绩"
   },
   {
     date: "2026-05",
-    title: "转入计算机科学与技术专业",
-    description: "确定未来方向，开始围绕计算机基础、开发与 AI 规划学习。",
+    title: "成功转入计算机",
+    description: "这真的是我想要的生活吗？",
     type: "选择"
   },
   {
@@ -26,27 +26,39 @@ const journeyEvents = [
     type: "学习"
   },
   {
-    date: "2025-09-05",
-    title: "拿到驾驶证",
-    description: "完成驾驶学习与考试，解锁一项新的生活技能。",
-    type: "生活"
+    date: "2025-12",
+    title: "英语四级 516 分",
+    description: "裸考大学英语四级，取得 516 分。",
+    type: "成绩"
   },
   {
-    date: "2025-09",
+    date: "2025-10",
+    title: "下定决心转专业",
+    description: "这不是我想要的生活。",
+    type: "选择"
+  },
+  {
+    date: "2025-09-05",
     title: "进入大学",
-    description: "开启大学生活，开始探索专业方向与长期目标。",
+    description: "好无聊的大学生活。",
     type: "阶段"
+  },
+  {
+    date: "2025-09-03",
+    title: "拿到驾驶证",
+    description: "驾照最速的传说。",
+    type: "生活"
   },
   {
     date: "2025-07",
     title: "开始学习 C 语言",
-    description: "第一次系统接触编程，为后续计算机学习打下基础。",
+    description: "学计算机一定要有一个强大的心理状态。————翁恺",
     type: "学习"
   },
   {
     date: "2025-06",
     title: "高考结束",
-    description: "告别高中阶段，也从这里开始记录新的成长轨迹。",
+    description: "永别了，画廊学校。",
     type: "起点"
   }
 ];
@@ -75,4 +87,21 @@ function renderJourneyCard(event, index, escape) {
 function renderJourney(container, escape) {
   const orderedEvents = [...journeyEvents].sort((a, b) => b.date.localeCompare(a.date));
   container.innerHTML = orderedEvents.map((event, index) => renderJourneyCard(event, index, escape)).join("");
+}
+
+// 首页只展示最近的几个节点，完整记录仍由成长轨迹页面负责。
+function renderJourneyPreview(container, escape, limit = 3) {
+  const orderedEvents = [...journeyEvents]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, limit);
+  container.innerHTML = orderedEvents.map(event => `
+    <a class="journey-preview-item" href="/Journey">
+      <time datetime="${escape(event.date)}">${escape(formatJourneyDate(event.date))}</time>
+      <div>
+        <h3>${escape(event.title)}</h3>
+        <p>${escape(event.description)}</p>
+      </div>
+      <span aria-hidden="true">↗</span>
+    </a>
+  `).join("");
 }

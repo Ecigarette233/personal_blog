@@ -1,6 +1,6 @@
 ﻿// 用途：实现首页与日记页面切换、日记渲染、分类筛选、搜索和上一篇/下一篇导航。
-// 依赖：diaries.js 和 friends.js 必须先加载；个人资料在 HTML 中修改。
-// 本文件同时负责好友卡片渲染，以及日记筛选、搜索和文章导航。
+// 依赖：diaries.js、friends.js、projects.js、journey.js 和 skills.js 必须先加载。
+// 本文件负责内容渲染、History API 路由、日记筛选与分页。
 
 // 页面元素与筛选状态。
 const viewNames = ["home", "journey", "friends", "friend", "projects", "diary", "article"];
@@ -113,7 +113,9 @@ function renderPostCard(post) {
 
 // 首页展示最新三篇日记；侧边栏的重大事件在 HTML 中单独维护。
 function renderRecentPosts() {
-  const recentPosts = diaries.slice(0, 3);
+  const recentPosts = [...diaries]
+    .sort((first, second) => second.date.localeCompare(first.date))
+    .slice(0, 3);
   document.getElementById("recent-posts").innerHTML = recentPosts
     .map(renderPostCard).join("");
 }
@@ -152,11 +154,93 @@ function renderSkills() {
   `).join("");
 }
 
+function projectAction(url, label, external = false) {
+  if (typeof url !== "string" || !url.trim()) return "";
+  const attributes = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+  return `<a href="${escapeHtml(url.trim())}"${attributes}>${escapeHtml(label)} <span aria-hidden="true">↗</span></a>`;
+}
+
+// 项目卡由 projects.js 驱动：没有填写的 GitHub / Demo 链接会自动隐藏，避免死链接。
+function renderProjectCard(project, compact = false) {
+  const highlights = compact ? project.highlights.slice(0, 2) : project.highlights;
+  const techStack = compact ? project.techStack.slice(0, 6) : project.techStack;
+  return `
+    <article class="project-card${compact ? " project-card-compact" : ""}">
+      <header class="project-card-head">
+        <div>
+          <p class="project-date">${escapeHtml(project.date)}</p>
+          <h2>${escapeHtml(project.name)}</h2>
+        </div>
+        <span class="project-status">${escapeHtml(project.status)}</span>
+      </header>
+      <p class="project-description">${escapeHtml(project.description)}</p>
+      <div class="project-tech" aria-label="${escapeHtml(project.name)} 使用技术">
+        ${techStack.map(item => `<span>${escapeHtml(item)}</span>`).join("")}
+      </div>
+      <ul class="project-highlights">
+        ${highlights.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+      <div class="project-actions">
+        ${projectAction(project.github, "GitHub", true)}
+        ${projectAction(project.demo, "查看站点")}
+      </div>
+    </article>
+  `;
+}
+
+function renderProjects() {
+  const projectList = Array.isArray(projects) ? projects : [];
+  document.getElementById("projects-list").innerHTML = projectList
+    .map(project => renderProjectCard(project)).join("");
+  document.getElementById("home-projects-list").innerHTML = projectList
+    .slice(0, 1)
+    .map(project => renderProjectCard(project, true)).join("");
+  document.getElementById("projects-empty").hidden = projectList.length !== 0;
+}
+
 function renderFriendProfile(friend) {
   document.getElementById("friend-profile-avatar").textContent = friend.avatar;
   document.getElementById("friend-profile-name").textContent = friend.name;
   document.getElementById("friend-profile-description").textContent = friend.description;
-  document.getElementById("friend-profile-bio").textContent = friend.bio;
+
+  // bio 兼容原来的单个字符串，也支持用数组写成多个自然段。
+  const bioContainer = document.getElementById("friend-profile-bio");
+  const bioParagraphs = Array.isArray(friend.bio) ? friend.bio : [friend.bio];
+  bioContainer.replaceChildren(...bioParagraphs
+    .filter(paragraph => typeof paragraph === "string" && paragraph.trim())
+    .map(paragraph => {
+      const element = document.createElement("p");
+      element.textContent = paragraph.trim();
+      return element;
+    }));
+
+  // 每次切换好友都重建照片，避免上一位好友的照片或加载回调残留。
+  const photoContainer = document.getElementById("friend-profile-photo");
+  const profileHeader = photoContainer.closest(".friend-profile-header");
+  photoContainer.replaceChildren();
+  photoContainer.hidden = true;
+  profileHeader.classList.remove("has-photo");
+  if (typeof friend.photo === "string" && friend.photo.trim()) {
+    const photo = document.createElement("img");
+    photo.alt = `${friend.name}的照片`;
+    photo.width = 176;
+    photo.height = 176;
+    photo.decoding = "async";
+    photo.style.objectPosition = friend.photoPosition || "center";
+    photo.onload = () => {
+      if (photo.parentElement !== photoContainer) return;
+      photoContainer.hidden = false;
+      profileHeader.classList.add("has-photo");
+    };
+    photo.onerror = () => {
+      if (photo.parentElement !== photoContainer) return;
+      photoContainer.hidden = true;
+      profileHeader.classList.remove("has-photo");
+      photo.remove();
+    };
+    photoContainer.append(photo);
+    photo.src = friend.photo.trim();
+  }
 
   const homepage = document.getElementById("friend-homepage");
   const hasHomepage = typeof friend.url === "string" && friend.url.trim() !== "";
@@ -167,13 +251,13 @@ function renderFriendProfile(friend) {
 // 分类与搜索同时生效，搜索范围包括标题、摘要和正文。
 function renderArchive() {
   const query = searchInput.value.trim().toLocaleLowerCase();
-  const matches = diaries.filter(post => {
+  const matches = [...diaries].filter(post => {
     const matchesCategory = selectedCategory === "全部"
       || post.category === selectedCategory;
     const text = [post.title, post.excerpt, ...post.body]
       .join(" ").toLocaleLowerCase();
     return matchesCategory && text.includes(query);
-  });
+  }).sort((first, second) => second.date.localeCompare(first.date));
 
   const totalPages = Math.ceil(matches.length / ARCHIVE_PAGE_SIZE);
   archivePage = clampPage(archivePage, Math.max(1, totalPages));
@@ -233,6 +317,15 @@ function updateNavigation(view) {
       link.removeAttribute("aria-current");
     }
   });
+}
+
+// 部署到任何域名后都会自动更新 canonical 与 Open Graph URL，不需要在代码中写死域名。
+function updateCanonicalUrl() {
+  const currentUrl = `${location.origin}${location.pathname}${location.search}`;
+  const canonical = document.querySelector('link[rel="canonical"]');
+  const openGraphUrl = document.querySelector('meta[property="og:url"]');
+  if (canonical) canonical.href = currentUrl;
+  if (openGraphUrl) openGraphUrl.content = currentUrl;
 }
 
 // 使用 History API；server.py 为直接访问、刷新及新标签页提供路由回退。
@@ -296,6 +389,7 @@ function route() {
     : view === "projects" ? "个人项目"
     : view === "diary" ? "全部日记" : "个人博客";
   document.title = `${title} · 黄敏津`;
+  updateCanonicalUrl();
 
   if (view === "home" && ["about", "contact"].includes(anchor)) {
     document.getElementById(anchor).scrollIntoView();
@@ -316,7 +410,9 @@ function initialize() {
   renderRecentPosts();
   renderFriends();
   renderSkills();
+  renderProjects();
   renderJourney(document.getElementById("timeline"), escapeHtml);
+  renderJourneyPreview(document.getElementById("journey-preview"), escapeHtml);
   document.getElementById("year").textContent = new Date().getFullYear();
 
   filterButtons.forEach(button => {
