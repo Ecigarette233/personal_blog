@@ -11,10 +11,10 @@ const friends = [
   {
     id: "liu-jianxing",
     showOnHome: true,
-    name: "刘健行",
+    name: "萎哥",
     avatar: "LJX",
     photo: "images/friends/ljx.jpg",
-    description: "萎哥、QQ",
+    description: "萎逼、QQ",
     bio: [
       "高中同学、高中睡友。",
       "黎明杀机最佳军团代言人",
@@ -27,27 +27,33 @@ const friends = [
   {
     id: "deng-anting",
     showOnHome: false,
-    name: "邓安廷",
+    name: "哈邓",
     avatar: "DAT",
     photo: "",
     description: "邓哥、哈邓",
-    bio: "错哥，我们登了",
+    bio: [
+      "错哥，我们登了",
+      "hytDADDY",
+    ],
     url: " "
   },
   {
     id: "chen-zijian",
     showOnHome: true,
-    name: "陈梓健",
+    name: "Harrisang",
     avatar: "CZJ",
     photo: "",
     description: "天使之翼",
-    bio: "最近在健身，听说已经练出天使之翼",
+    bio: [
+      "最近在健身，听说已经练出天使之翼",
+      "董哲舔狗"
+    ],
     url: " "
   },
   {
     id: "dong-zhe",
     showOnHome: false,
-    name: "董喆",
+    name: "动辄",
     avatar: "DZ",
     photo: "",
     description: "东京开墓尸",
@@ -57,7 +63,7 @@ const friends = [
   {
     id: "fang-haoming",
     showOnHome: true,
-    name: "方浩明",
+    name: "牢八",
     avatar: "FHM",
     photo: "images/friends/fhm.jpg",
     photoPosition: "center 35%",
