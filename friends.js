@@ -9,10 +9,10 @@
 
 const friends = [
   {
-    id: "liu-jianxing",
+    id: "hlschoolgaozhongsheng",
     showOnHome: true,
     name: "萎哥",
-    avatar: "LJX",
+    avatar: "Q",
     photo: "images/friends/ljx.jpg",
     description: "萎逼、QQ",
     bio: [
@@ -25,10 +25,10 @@ const friends = [
     url: " "
   },
   {
-    id: "deng-anting",
+    id: "JamesHarden",
     showOnHome: false,
     name: "哈邓",
-    avatar: "DAT",
+    avatar: "H",
     photo: "",
     description: "邓哥、哈邓",
     bio: [
@@ -38,33 +38,33 @@ const friends = [
     url: " "
   },
   {
-    id: "chen-zijian",
+    id: "angel-chen",
     showOnHome: true,
     name: "Harrisang",
-    avatar: "CZJ",
+    avatar: "HRS",
     photo: "",
     description: "天使之翼",
     bio: [
       "最近在健身，听说已经练出天使之翼",
-      "董哲舔狗"
+      "动辄舔狗"
     ],
     url: " "
   },
   {
-    id: "dong-zhe",
+    id: "Luguand77",
     showOnHome: false,
     name: "动辄",
     avatar: "DZ",
     photo: "",
     description: "东京开墓尸",
-    bio: "陈梓健必玩榜top1",
+    bio: "Harrisang必玩榜top1",
     url: " "
   },
   {
-    id: "fang-haoming",
+    id: "Diandaoweizhi",
     showOnHome: true,
     name: "牢八",
-    avatar: "FHM",
+    avatar: "8",
     photo: "images/friends/fhm.jpg",
     photoPosition: "center 35%",
     description: "牢八、网安最后的深情",
@@ -72,9 +72,9 @@ const friends = [
     url: " "
   },
   {
-    id: "cao-sihan",
+    id: "CSH233",
     showOnHome: false,
-    name: "Niger",
+    name: "Nigger",
     avatar: "N",
     photo: "",
     description: "大内哥",

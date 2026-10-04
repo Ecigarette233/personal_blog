@@ -1,8 +1,8 @@
-﻿// 用途：存放日记内容；首页、侧边栏和全部日记页面都读取这里的数据。
+﻿// 用途：存放日记内容；首页、全部日记和文章详情读取这里的数据。
 // 新增日记：复制下面任意一个完整对象，粘贴到 diaries 数组中，对象之间用逗号分隔。
 // id 必须唯一，建议使用英文、数字和连字符；date 使用 YYYY-MM-DD 格式。
 // category 使用「技术」「随笔」或「生活」；body 中每个字符串对应一个正文段落。
-// 把新日记放在数组前面，侧边栏和首页显示前 3 篇。
+// 页面自动按 date 从新到旧排列；同日期保留数组顺序，首页显示最近 3 篇。
 const diaries = [
   // 技术类示例：复制整个对象后修改各项内容。
   {
@@ -12,9 +12,10 @@ const diaries = [
     category: "技术",
     excerpt: "记录个人博客的文件结构、数据组织方式和页面交互实现。",
     body: [
-      "这个博客将不同职责拆分到独立文件。index.html 负责页面结构，styles.css 负责视觉样式，diaries.js 和 friends.js 保存内容数据，blog.js 负责渲染、筛选、搜索和页面切换。拆分之后，修改内容时更容易定位问题。",
-      "日记使用 JavaScript 对象保存。每篇日记包含 id、title、date、category、excerpt 和 body 六个字段。页面启动后会读取这些对象，并生成首页列表、侧边栏列表和文章详情，因此新增日记时不需要重复修改 HTML。",
-      "页面使用 URL 中的 hash 表示当前视图。例如 #diary 对应全部日记，#post/build-a-personal-blog 对应本文。该方案不依赖服务器，直接打开 HTML 文件也能使用浏览器的前进和后退功能。"
+      "这个博客将不同职责拆分到独立文件。index.html 负责页面结构，styles.css 负责视觉样式，diaries.js、friends.js、projects.js、journey.js 和 skills.js 分别保存日记、好友、项目、成长轨迹和技能内容，blog.js 负责渲染、筛选、搜索和页面切换。拆分之后，修改内容时更容易定位问题。",
+      "日记使用 JavaScript 对象保存。每篇日记包含 id、title、date、category、excerpt 和 body 六个字段。页面读取这些对象后，会按日期从新到旧生成首页列表、归档和文章前后篇导航，新增日记不需要调整数组顺序。侧边栏的重大事件入口在 index.html 中单独维护。",
+      "页面现在使用 History API 路由，首页、项目、日记、成长轨迹和好友对应 /Home、/Projects、/Diary、/Journey 和 /Friends。文章地址是 /Post/build-a-personal-blog，好友详情使用 /Friend/好友ID。站内切换时更新地址，浏览器的前进和后退也能使用。",
+      "本地预览需要运行 python server.py，不能直接双击 HTML。线上由 Nginx 的 try_files $uri $uri/ /index.html; 把页面路径回退到 index.html，这样直接打开详情地址或刷新页面时也能正常加载。"
     ]
   },
   // 随笔类示例：复制整个对象后修改各项内容。

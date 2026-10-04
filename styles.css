@@ -6,9 +6,7 @@
   --muted: #68637c;
   --line: #ddd8ef;
   --accent: #8d55d7;
-  --sage: #eae4fa;
   --surface: rgba(255, 255, 255, .78);
-  --surface-solid: #fff;
   --shadow: 0 10px 28px rgba(75, 54, 120, .07);
   scrollbar-gutter: stable;
 }
@@ -84,8 +82,8 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 .brand {
-  font: italic 30px Georgia,serif;
-  letter-spacing: -1.5px;
+  font: 500 23px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  letter-spacing: 2px;
 }
 
 .tiny {
@@ -115,13 +113,14 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 .nav a:hover {
-  background: #ecebe4;
+  background: #e9e0f6;
   color: var(--ink);
 }
 
 .nav a.active {
-  background: var(--ink);
-  color: var(--paper);
+  background: linear-gradient(110deg,#6a91e3,#9b73d9 55%,#ce81b8);
+  color: #fff;
+  box-shadow: 0 5px 18px #9573d329;
 }
 
 .nav-number {
@@ -139,11 +138,6 @@ button:focus-visible,a:focus-visible,input:focus-visible {
   align-items: center;
   font-size: 11px;
   letter-spacing: 1px;
-}
-
-.side-heading a {
-  color: var(--accent);
-  letter-spacing: 0;
 }
 
 .side-post {
@@ -284,17 +278,12 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 h1 {
-  font-family: Georgia,"Songti SC","SimSun",serif;
-  font-size: clamp(40px,4.6vw,65px);
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 42px;
   line-height: 1.25;
-  letter-spacing: -2px;
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 600;
   margin: 22px 0;
-}
-
-h1 em {
-  color: var(--accent);
-  font-weight: 400;
 }
 
 .section {
@@ -312,7 +301,7 @@ h1 em {
 
 .section-head h2 {
   font-size: 19px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -322,17 +311,11 @@ h1 em {
   margin-right: 13px;
 }
 
-.section-head>span {
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: 2px;
-}
-
 .about-flow { display: grid; }
 
 .about-copy p {
   margin: 0 0 12px;
-  color: #62645b;
+  color: #716981;
   line-height: 2;
 }
 
@@ -345,7 +328,7 @@ h1 em {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
-  margin-top: 26px;
+  margin-top: 0;
   padding-top: 22px;
   border-top: 1px solid var(--line);
 }
@@ -389,6 +372,8 @@ h1 em {
   width: fit-content;
   text-align: center;
   border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
   padding: 4px 9px;
   border-radius: 5px;
   font: 12px/1.6 "Segoe UI", "Microsoft YaHei", sans-serif;
@@ -396,7 +381,6 @@ h1 em {
 
 .skills span:first-child {
   color: var(--accent);
-  border-color: #d7b6a7;
 }
 
 .latest {
@@ -450,21 +434,6 @@ h1 em {
 
 .friends-page {
   padding-bottom: 30px;
-}
-
-.friends-header {
-  padding: 32px 0 24px;
-}
-
-.friends-header h1 {
-  margin: 10px 0 8px;
-  font-size: 36px;
-}
-
-.friends-header p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
 }
 
 .friends-page .friends-grid {
@@ -622,6 +591,7 @@ h1 em {
 }
 
 .friend-profile-bio p {
+  overflow-wrap: anywhere;
   margin: 0 0 12px;
   color: #716981;
   line-height: 2;
@@ -638,21 +608,6 @@ h1 em {
 
 .projects-page {
   padding-bottom: 30px;
-}
-
-.projects-header {
-  padding: 42px 0 30px;
-  border-bottom: 1px solid var(--line);
-}
-
-.projects-header h1 {
-  margin: 12px 0 6px;
-  font-size: 38px;
-}
-
-.projects-header p {
-  margin: 0;
-  color: var(--muted);
 }
 
 .contact-section {
@@ -746,19 +701,6 @@ footer {
   color: var(--muted);
 }
 
-.archive-header {
-  padding: 48px 0 25px;
-}
-
-.archive-header h1 {
-  font-size: 48px;
-  margin: 15px 0;
-}
-
-.archive-header p {
-  color: var(--muted);
-}
-
 .archive-tools {
   display: flex;
   gap: 15px;
@@ -817,7 +759,7 @@ input[type=search] {
 }
 
 .article {
-  max-width: 680px;
+  max-width: 720px;
   margin: 28px auto 65px;
   min-height: 55vh;
 }
@@ -842,12 +784,12 @@ input[type=search] {
 
 .article-body {
   margin-top: 30px;
-  font-size: 15px;
-  line-height: 2.2;
+  font-size: 16px;
+  line-height: 2.05;
 }
 
 .article-body p {
-  margin: 0 0 23px;
+  margin: 0 0 26px;
 }
 
 .article-nav {
@@ -1003,11 +945,6 @@ input[type=search] {
     padding: 22px;
   }
 
-  .section-head>span {
-    letter-spacing: 1px;
-    font-size: 10px;
-  }
-
   .article h1 {
     font-size: 28px;
   }
@@ -1035,54 +972,8 @@ footer {
 
 }
 
-/* Theme customization */
-body {
-  background: radial-gradient(ellipse at 5% 0%,#c8dcff88,transparent 48%),radial-gradient(ellipse at 100% 25%,#dac5ff88,transparent 48%),radial-gradient(ellipse at 55% 100%,#ffd1e788,transparent 55%),#f6f5ff;
-  background-attachment: fixed;
-}
-
-.sidebar {
-  background: linear-gradient(165deg,#eaf2ffb3,#efe6ff99 55%,#ffe8f299);
-  backdrop-filter: blur(20px);
-}
-
-.eyebrow,.all-link,.side-heading a,.back,.post-meta .tag,.article-nav a {
-  color: #8752cb;
-}
-
-.nav a:hover {
-  background: #e9e0f6;
-}
-
-.nav a.active {
-  background: linear-gradient(110deg,#6a91e3,#9b73d9 55%,#ce81b8);
-  color: #fff;
-  box-shadow: 0 5px 18px #9573d329;
-}
-
-h1 em {
-  background: linear-gradient(100deg,#578de0,#9e67d8 50%,#dd7eb5);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.about-copy p {
-  color: #716981;
-}
-
-.about-copy strong {
-  color: var(--ink);
-}
-
-.skills span {
-  background: #ffffff66;
-  border-color: #dcd3ef;
-}
-
-.skills span:first-child {
-  background: linear-gradient(110deg,#e3eeff,#eee0ff,#ffe5f1);
-  border-color: #cbb7e5;
+/* 重点元素沿用蓝紫粉主题。 */
+.eyebrow,.all-link,.back,.post-meta .tag,.article-nav a {
   color: #8752cb;
 }
 
@@ -1103,15 +994,6 @@ input[type=search] {
 ::selection {
   background: #ddc5f5;
   color: #3c285b;
-}
-
-/* Theme customization */
-.brand {
-  font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-  font-size: 23px;
-  font-weight: 500;
-  font-style: normal;
-  letter-spacing: 2px;
 }
 
 .hero {
@@ -1299,23 +1181,14 @@ input[type=search] {
 
 /* 成长轨迹：最新节点在顶部，沿中轴交替向下展开。 */
 .journey-page {
-  max-width: 960px;
-  margin-inline: auto;
-  padding-bottom: 72px;
-}
-
-.journey-header {
-  max-width: 620px;
-  padding: 48px 0 24px;
+  max-width: none;
+  margin-inline: 0;
+  padding-bottom: 30px;
 }
 
 .timeline {
   position: relative;
   padding: 12px 0 10px;
-}
-
-.timeline:before {
-  content: none;
 }
 
 .timeline-item {
@@ -1421,8 +1294,6 @@ input[type=search] {
 }
 
 @media(max-width:720px) {
-  .journey-header { padding: 34px 0 20px; }
-  .timeline:before { left: 76px; }
   .timeline-item {
     grid-template-columns: 60px minmax(0,1fr);
     column-gap: 32px;
@@ -1449,13 +1320,8 @@ input[type=search] {
 }
 
 /* Digital Garden refinement：让大部分内容保持安静，只把渐变留给导航、头像与时间轴。 */
-body {
-  background: var(--paper);
-}
-
 .sidebar {
   background: rgba(250, 249, 255, .92);
-  backdrop-filter: none;
 }
 
 .section {
@@ -1467,25 +1333,6 @@ body {
   margin: -8px 0 22px;
   color: var(--muted);
   font-size: 13px;
-}
-
-.skills-groups {
-  margin-top: 0;
-}
-
-.skills-section + .skills-section:before {
-  background: linear-gradient(90deg, #719ce8, #a97ad8, #d98bbd);
-}
-
-.skills span,
-.skills span:first-child {
-  background: var(--surface);
-  border-color: var(--line);
-  color: var(--ink);
-}
-
-.skills span:first-child {
-  color: var(--accent);
 }
 
 .project-list {
@@ -1601,10 +1448,6 @@ body {
   color: #6540a3;
 }
 
-.contact-card-secondary {
-  opacity: .74;
-}
-
 .friend-card,
 .contact-card,
 .timeline-card {
@@ -1664,19 +1507,6 @@ a.contact-card:hover {
   right: 15px;
   top: 14px;
   color: var(--accent);
-}
-
-.article {
-  max-width: 720px;
-}
-
-.article-body {
-  font-size: 16px;
-  line-height: 2.05;
-}
-
-.article-body p {
-  margin-bottom: 26px;
 }
 
 @media (max-width: 900px) and (min-width: 721px) {
@@ -1770,32 +1600,7 @@ a.contact-card:hover {
     font-size: 10px;
   }
 }
-/* 日记归档：紧凑的概览和双列卡片，共享原有配色。 */
-.archive-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 24px;
-  padding: 32px 0 24px;
-}
-
-.archive-header h1 { margin: 10px 0 8px; }
-.archive-header p { margin: 0; font-size: 12px; }
-
-.archive-summary {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 24px;
-  margin: 0;
-  padding: 16px 22px;
-  border-left: 1px solid var(--line);
-}
-
-.archive-summary dt { color: var(--muted); font-size: 10px; }
-.archive-summary dd { margin: 0; font-size: 25px; line-height: 1.5; }
-.archive-summary small { color: var(--muted); font-size: 11px; }
-.summary-update { grid-column: 1 / -1; }
-.summary-update dd { font: 12px/1.8 monospace; }
+/* 日记归档：单列卡片，每页最多六篇，共享原有配色。 */
 .archive-tools { padding: 16px 0; margin-bottom: 16px; }
 .result-count { margin-bottom: 16px; }
 
@@ -1901,15 +1706,6 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 .post-meta { flex-wrap: wrap; }
 
 @media (max-width: 900px) {
-  .archive-header { grid-template-columns: 1fr; gap: 18px; }
-  .archive-summary {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding: 14px 18px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: #ffffff60;
-  }
-  .summary-update { grid-column: auto; }
   #archive-posts .latest {
     column-gap: 20px;
   }
@@ -1927,32 +1723,15 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 
 @media (max-width: 560px) {
   #archive-posts { gap: 10px; }
-  .archive-summary { gap: 12px; }
   .page-controls { gap: 4px; }
   .page-link { min-width: 30px; padding-inline: 8px; }
-}
-
-/* Typography: restrained headings and clear information hierarchy. */
-h1 {
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 42px;
-  font-weight: 600;
-  letter-spacing: 0;
 }
 
 .hero {
   border-bottom: 1px solid var(--line);
 }
 
-.section-head h2 {
-  font-weight: 600;
-}
-
-.archive-header h1 {
-  font-size: 36px;
-}
-
-/* 各独立页面共用同一套左对齐页头。 */
+/* 各独立页面共用页头：标签在左，标题在右。 */
 .page-header {
   width: 100%;
   max-width: none;
@@ -2007,8 +1786,6 @@ h1 {
   border-bottom: 1px solid var(--line);
 }
 
-.archive-header .eyebrow { grid-area: eyebrow; }
-.archive-header h1 { grid-area: title; }
 #diary-view .archive-tools {
   padding: 8px 0 18px;
   margin-bottom: 16px;
@@ -2025,12 +1802,6 @@ h1 {
 #archive-pagination {
   margin-top: auto;
   margin-bottom: 0;
-}
-
-.journey-page {
-  max-width: none;
-  margin-inline: 0;
-  padding-bottom: 30px;
 }
 
 .journey-page .timeline {

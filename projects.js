@@ -3,7 +3,7 @@
 const projects = [
   {
     id: "personal-digital-garden",
-    name: "Personal Digital Garden",
+    name: "个人博客",
     description: "自行搭建并持续维护的个人数字花园，用来记录技术学习、项目实践与少量生活片段。",
     status: "持续维护",
     techStack: [
@@ -24,7 +24,7 @@ const projects = [
       "可维护的成长时间轴与内容数据文件",
       "Nginx SPA fallback、Git 部署与 HTTPS 配置"
     ],
-    github: "",
+    github: "https://github.com/Ecigarette233/personal_blog",
     demo: "/Home",
     date: "2026.10"
   }

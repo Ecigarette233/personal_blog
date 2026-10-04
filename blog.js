@@ -1,9 +1,9 @@
-﻿// 用途：实现首页与日记页面切换、日记渲染、分类筛选、搜索和上一篇/下一篇导航。
+﻿// 用途：渲染博客各页面，维护路由、日记筛选、搜索、分页和文章前后篇导航。
 // 依赖：diaries.js、friends.js、projects.js、journey.js 和 skills.js 必须先加载。
 // 本文件负责内容渲染、History API 路由、日记筛选与分页。
 
 // 页面元素与筛选状态。
-const viewNames = ["home", "journey", "friends", "friend", "projects", "diary", "article"];
+const viewNames = ["home", "journey", "friends", "friend", "projects", "diary", "article", "not-found"];
 const navigationLinks = document.querySelectorAll("[data-nav]");
 const filterButtons = document.querySelectorAll("[data-filter]");
 const searchInput = document.getElementById("search");
@@ -13,6 +13,23 @@ const ARCHIVE_PAGE_SIZE = 6;
 const ARTICLE_PAGE_SIZE = 800;
 let archivePage = 1;
 let archiveReturnLink = "/Diary";
+
+// 统一日记顺序并补齐可选内容；不修改原数据，同日保留数组顺序。
+// 缺少有效 id 的记录无法生成详情链接，因此跳过；缺少日期的记录排在最后。
+function getSortedDiaries() {
+  return (Array.isArray(diaries) ? diaries : [])
+    .filter(post => post && typeof post.id === "string" && post.id.trim())
+    .map(post => ({
+      ...post,
+      date: typeof post.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(post.date) ? post.date : "",
+      title: typeof post.title === "string" && post.title.trim() ? post.title : "未命名日记",
+      category: typeof post.category === "string" && post.category.trim() ? post.category : "未分类",
+      excerpt: typeof post.excerpt === "string" ? post.excerpt : "",
+      body: (Array.isArray(post.body) ? post.body : [post.body])
+        .filter(paragraph => typeof paragraph === "string")
+    }))
+    .sort((first, second) => second.date.localeCompare(first.date));
+}
 
 function currentAddress() {
   return location.pathname + location.search + location.hash;
@@ -87,7 +104,7 @@ function escapeHtml(value) {
     "&": "&amp;", "<": "&lt;", ">": "&gt;",
     '"': "&quot;", "'": "&#39;"
   };
-  return String(value).replace(/[&<>"']/g, character => entities[character]);
+  return String(value ?? "").replace(/[&<>"']/g, character => entities[character]);
 }
 
 function postLink(post) {
@@ -102,7 +119,7 @@ function renderPostCard(post) {
   return `
     <a class="latest" href="${postLink(post)}">
       <div class="post-meta">
-        <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
+        ${post.date ? `<time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>` : '<span>日期待补充</span>'}
         <span class="tag">${escapeHtml(post.category)}</span>
       </div>
       <h3>${escapeHtml(post.title)}</h3>
@@ -113,9 +130,7 @@ function renderPostCard(post) {
 
 // 首页展示最新三篇日记；侧边栏的重大事件在 HTML 中单独维护。
 function renderRecentPosts() {
-  const recentPosts = [...diaries]
-    .sort((first, second) => second.date.localeCompare(first.date))
-    .slice(0, 3);
+  const recentPosts = getSortedDiaries().slice(0, 3);
   document.getElementById("recent-posts").innerHTML = recentPosts
     .map(renderPostCard).join("");
 }
@@ -251,13 +266,13 @@ function renderFriendProfile(friend) {
 // 分类与搜索同时生效，搜索范围包括标题、摘要和正文。
 function renderArchive() {
   const query = searchInput.value.trim().toLocaleLowerCase();
-  const matches = [...diaries].filter(post => {
+  const matches = getSortedDiaries().filter(post => {
     const matchesCategory = selectedCategory === "全部"
       || post.category === selectedCategory;
     const text = [post.title, post.excerpt, ...post.body]
       .join(" ").toLocaleLowerCase();
     return matchesCategory && text.includes(query);
-  }).sort((first, second) => second.date.localeCompare(first.date));
+  });
 
   const totalPages = Math.ceil(matches.length / ARCHIVE_PAGE_SIZE);
   archivePage = clampPage(archivePage, Math.max(1, totalPages));
@@ -273,8 +288,9 @@ function renderArchive() {
   replaceAddress(archiveReturnLink);
 }
 
-function renderArticle(index, requestedPage) {
-  const post = diaries[index];
+function renderArticle(post, requestedPage) {
+  const orderedPosts = getSortedDiaries();
+  const index = orderedPosts.findIndex(item => item.id === post.id);
   const pages = paginateBody(post.body);
   const page = clampPage(requestedPage, pages.length);
   const pageLink = number => `${postLink(post)}${number > 1 ? `?page=${number}` : ""}`;
@@ -282,7 +298,7 @@ function renderArticle(index, requestedPage) {
   document.getElementById("article-back").href = archiveReturnLink;
   document.getElementById("article-title").textContent = post.title;
   document.getElementById("article-meta").innerHTML = `
-    <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
+    ${post.date ? `<time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>` : '<span>日期待补充</span>'}
     <span class="tag">${escapeHtml(post.category)}</span>
     <span>黄敏津</span>
   `;
@@ -291,10 +307,10 @@ function renderArticle(index, requestedPage) {
   renderPagination("article-pagination", page, pages.length, pageLink);
 
   const previousLink = index > 0
-    ? `<a href="${postLink(diaries[index - 1])}">← 上一篇</a>`
+    ? `<a href="${postLink(orderedPosts[index - 1])}">← 上一篇</a>`
     : "<span></span>";
-  const nextLink = index < diaries.length - 1
-    ? `<a href="${postLink(diaries[index + 1])}">下一篇 →</a>`
+  const nextLink = index < orderedPosts.length - 1
+    ? `<a href="${postLink(orderedPosts[index + 1])}">下一篇 →</a>`
     : "<span></span>";
   document.getElementById("article-nav").innerHTML = previousLink + nextLink;
 }
@@ -306,7 +322,7 @@ function updateNavigation(view) {
     : view === "journey" ? "journey"
     : (view === "friends" || view === "friend") ? "friends"
     : view === "projects" ? "projects"
-    : "home";
+    : view === "home" ? "home" : null;
 
   navigationLinks.forEach(link => {
     const active = link.dataset.nav === activeNavigation;
@@ -319,7 +335,7 @@ function updateNavigation(view) {
   });
 }
 
-// 部署到任何域名后都会自动更新 canonical 与 Open Graph URL，不需要在代码中写死域名。
+// HTML 提供正式域名的初始值；路由变化后同步当前地址。仅更新浏览器中的元信息。
 function updateCanonicalUrl() {
   const currentUrl = `${location.origin}${location.pathname}${location.search}`;
   const canonical = document.querySelector('link[rel="canonical"]');
@@ -332,7 +348,7 @@ function updateCanonicalUrl() {
 // 兼容旧的 #home、#diary、#friends、#post/... 等链接。
 function route() {
   const rawHash = location.hash.slice(1);
-  const legacy = /^(?:home|diary|journey|friends|projects|post(?:\/|$)|friend(?:\/|$))/i.test(rawHash)
+  const legacy = /^(?:(?:home|diary|journey|friends|projects)(?:\?|$)|(?:post|friend)\/)/i.test(rawHash)
     ? rawHash
     : "";
   const anchor = legacy ? "" : rawHash.toLowerCase();
@@ -343,29 +359,31 @@ function route() {
   const hash = section.toLowerCase();
   const id = segments.join("/");
   const params = new URLSearchParams(query);
-  let view = "home";
-  let postIndex = -1;
+  let view = "not-found";
+  let post;
   let friendIndex = -1;
 
-  if (hash === "diary") {
+  if (!segments.length && ["", "index.html", "home"].includes(hash)) {
+    view = "home";
+  } else if (hash === "diary" && !segments.length) {
     view = "diary";
     const category = params.get("category") || "全部";
     selectedCategory = Array.from(filterButtons).some(button => button.dataset.filter === category) ? category : "全部";
     searchInput.value = params.get("q") || "";
     archivePage = params.get("page") || 1;
     updateFilters();
-  } else if (hash === "friends") {
+  } else if (hash === "friends" && !segments.length) {
     view = "friends";
-  } else if (hash === "journey") {
+  } else if (hash === "journey" && !segments.length) {
     view = "journey";
-  } else if (hash === "projects") {
+  } else if (hash === "projects" && !segments.length) {
     view = "projects";
-  } else if (hash === "friend") {
+  } else if (hash === "friend" && segments.length === 1) {
     friendIndex = friends.findIndex(friend => encodeURIComponent(friend.id) === id);
-    view = friendIndex >= 0 ? "friend" : "friends";
-  } else if (hash === "post") {
-    postIndex = diaries.findIndex(post => encodeURIComponent(post.id) === id);
-    view = postIndex >= 0 ? "article" : "diary";
+    view = friendIndex >= 0 ? "friend" : "not-found";
+  } else if (hash === "post" && segments.length === 1) {
+    post = getSortedDiaries().find(item => encodeURIComponent(item.id) === id);
+    view = post ? "article" : "not-found";
   }
 
   viewNames.forEach(name => {
@@ -374,7 +392,7 @@ function route() {
   updateNavigation(view);
 
   if (view === "diary") renderArchive();
-  if (view === "article") renderArticle(postIndex, params.get("page") || 1);
+  if (view === "article") renderArticle(post, params.get("page") || 1);
   if (view === "friend") renderFriendProfile(friends[friendIndex]);
   if (view === "home") replaceAddress(anchor ? `/Home#${anchor}` : "/Home");
   if (view === "journey") replaceAddress("/Journey");
@@ -382,12 +400,13 @@ function route() {
   if (view === "projects") replaceAddress("/Projects");
   if (view === "friend") replaceAddress(friendLink(friends[friendIndex]));
 
-  const title = view === "article" ? diaries[postIndex].title
+  const title = view === "article" ? post.title
     : view === "friend" ? `${friends[friendIndex].name} · 好友简介`
     : view === "friends" ? "我的好友"
     : view === "journey" ? "成长轨迹"
     : view === "projects" ? "个人项目"
-    : view === "diary" ? "全部日记" : "个人博客";
+    : view === "diary" ? "全部日记"
+    : view === "not-found" ? "404 · 页面没有找到" : "个人博客";
   document.title = `${title} · 黄敏津`;
   updateCanonicalUrl();
 

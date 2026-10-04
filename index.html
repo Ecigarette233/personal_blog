@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
-<!-- 用途：个人博客的页面结构，包含个人简介、头像、兴趣爱好、好友、联系方式、日记列表和阅读页面。
-     样式由 styles.css 提供，日记与好友数据分别由 diaries.js、friends.js 提供，交互由 blog.js 实现。 -->
+<!-- 页面结构由本文件维护，样式在 styles.css，渲染与 History API 路由在 blog.js。
+     diaries.js、friends.js、projects.js、journey.js、skills.js 分别维护日记、好友、项目、成长轨迹和技能内容。 -->
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8">
@@ -10,12 +10,12 @@
     <meta property="og:title" content="黄敏津 · Personal Digital Garden">
     <meta property="og:description" content="记录技术学习、项目实践与少量生活片段。">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="/">
+    <meta property="og:url" content="https://huangminjin.com/">
     <title>黄敏津 · Personal Digital Garden</title>
     <base href="/">
-    <link rel="canonical" href="/">
+    <link rel="canonical" href="https://huangminjin.com/">
     <link rel="icon" href="images/favicon.svg?v=20261004-chick-outline" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css?v=20261004-5">
+    <link rel="stylesheet" href="styles.css?v=20261004-quality2">
   </head>
   <body>
     <div class="shell">
@@ -80,7 +80,7 @@
           <header class="hero">
             <div class="eyebrow">PROFILE / 个人简介</div>
             <div class="portrait">
-              <img class="portrait-photo" src="images/profile-avatar.png" alt="黄敏津的头像">
+              <img class="portrait-photo" src="images/profile-avatar.webp" width="800" height="1000" decoding="async" alt="黄敏津的头像">
             </div>
             <div class="hero-content">
               <h1>黄敏津</h1>
@@ -187,7 +187,7 @@
                 </div>
                 <span class="contact-arrow" aria-hidden="true">↗</span>
               </a>
-              <div class="contact-card contact-card-email">
+              <a class="contact-card contact-card-email" href="mailto:huangminijn2007@gmail.com">
                 <span class="contact-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
                 </span>
@@ -195,7 +195,7 @@
                   <span class="contact-label">Gmail</span>
                   <strong>huangminijn2007@gmail.com</strong>
                 </div>
-              </div>
+              </a>
             </div>
           </section>
         </div>
@@ -284,6 +284,15 @@
             </nav>
           </article>
         </section>
+        <section id="not-found-view" hidden>
+          <header class="page-header">
+            <div class="eyebrow">NOT FOUND / 页面未找到</div>
+            <h1>404</h1>
+            <p>页面没有找到</p>
+          </header>
+          <p><a class="back" href="/Home">← 返回首页</a></p>
+        </section>
+
         <footer>
           <span>
             ©
@@ -294,12 +303,12 @@
         </footer>
       </main>
     </div>
-    <script src="diaries.js?v=20261003-2" defer></script>
+    <script src="diaries.js?v=20261004-quality2" defer></script>
     <script src="friends.js?v=20261004-4" defer></script>
-    <script src="projects.js?v=20261004-1" defer></script>
+    <script src="projects.js?v=20261004-quality2" defer></script>
     <script src="journey.js?v=20261004-2" defer></script>
     <script src="skills.js?v=20261004-1" defer></script>
-    <script src="blog.js?v=20261004-3" defer></script>
+    <script src="blog.js?v=20261004-quality2" defer></script>
   </body>
 </html>
 

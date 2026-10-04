@@ -1,13 +1,11 @@
 """Local blog preview with clean URL support. Run: python server.py"""
 
 import argparse
-import re
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent
-ROUTE = re.compile(r"/(?:Home|Diary|Journey|Friends|Projects|Post/[^/]+|Friend/[^/]+)/?", re.IGNORECASE)
 
 
 class BlogHandler(SimpleHTTPRequestHandler):
@@ -16,7 +14,11 @@ class BlogHandler(SimpleHTTPRequestHandler):
 
     def send_head(self):
         original = self.path
-        if ROUTE.fullmatch(urlsplit(self.path).path):
+        path = unquote(urlsplit(self.path).path)
+        target = Path(self.translate_path(path))
+        # 页面路径回退给前端显示对应页面或 404；缺失图片、脚本仍返回真正的 HTTP 404。
+        is_page = not Path(path).suffix or path.lower().startswith(("/post/", "/friend/"))
+        if not target.exists() and is_page:
             self.path = "/index.html"
         try:
             return super().send_head()
