@@ -212,37 +212,147 @@ function renderProjects() {
   document.getElementById("projects-empty").hidden = projectList.length !== 0;
 }
 
-function renderFriendProfile(friend) {
-  document.getElementById("friend-profile-avatar").textContent = friend.avatar;
-  document.getElementById("friend-profile-name").textContent = friend.name;
-  document.getElementById("friend-profile-description").textContent = friend.description;
+function friendMediaSource(value) {
+  if (typeof value !== "string") return "";
+  const source = value.trim();
+  return /^(?:javascript|data):/i.test(source) ? "" : source;
+}
 
-  // bio 兼容原来的单个字符串，也支持用数组写成多个自然段。
-  const bioContainer = document.getElementById("friend-profile-bio");
+function createFriendImage(source, alt, options = {}) {
+  const safeSource = friendMediaSource(source);
+  if (!safeSource) return null;
+  const image = document.createElement("img");
+  image.alt = typeof alt === "string" ? alt : "";
+  image.decoding = "async";
+  if (options.lazy !== false) image.loading = "lazy";
+  if (Number.isFinite(options.width)) image.width = options.width;
+  if (Number.isFinite(options.height)) image.height = options.height;
+  if (typeof options.position === "string" && options.position.trim()) {
+    image.style.objectPosition = options.position.trim();
+  }
+  image.src = safeSource;
+  return image;
+}
+
+function createFriendContentBlock(block) {
+  if (!block || typeof block !== "object") return null;
+  const type = typeof block.type === "string" ? block.type.toLowerCase() : "";
+  if (type === "text" && typeof block.text === "string" && block.text.trim()) {
+    const paragraph = document.createElement("p");
+    paragraph.className = "friend-content-text";
+    paragraph.textContent = block.text.trim();
+    return paragraph;
+  }
+  if (type === "quote" && typeof block.text === "string" && block.text.trim()) {
+    const quote = document.createElement("blockquote");
+    quote.className = "friend-content-quote";
+    const paragraph = document.createElement("p");
+    paragraph.textContent = block.text.trim();
+    quote.append(paragraph);
+    return quote;
+  }
+  if (type === "image") {
+    const figure = document.createElement("figure");
+    figure.className = "friend-content-image";
+    const image = createFriendImage(block.src, block.alt, {
+      width: Number(block.width),
+      height: Number(block.height),
+      position: block.position
+    });
+    if (!image) return null;
+    image.onerror = () => figure.remove();
+    figure.append(image);
+    if (typeof block.caption === "string" && block.caption.trim()) {
+      const caption = document.createElement("figcaption");
+      caption.textContent = block.caption.trim();
+      figure.append(caption);
+    }
+    return figure;
+  }
+  if (type === "gallery" && Array.isArray(block.images)) {
+    const gallery = document.createElement("div");
+    gallery.className = "friend-content-gallery";
+    gallery.setAttribute("role", "group");
+    gallery.setAttribute("aria-label", "好友照片集");
+    block.images.forEach(item => {
+      if (!item || typeof item !== "object") return;
+      const figure = document.createElement("figure");
+      const image = createFriendImage(item.src, item.alt, {
+        width: Number(item.width),
+        height: Number(item.height),
+        position: item.position
+      });
+      if (!image) return;
+      image.onerror = () => {
+        figure.remove();
+        if (!gallery.children.length) gallery.remove();
+      };
+      figure.append(image);
+      if (typeof item.caption === "string" && item.caption.trim()) {
+        const caption = document.createElement("figcaption");
+        caption.textContent = item.caption.trim();
+        figure.append(caption);
+      }
+      gallery.append(figure);
+    });
+    return gallery.children.length ? gallery : null;
+  }
+  return null;
+}
+
+function renderFriendContent(friend, container) {
+  const contentBlocks = Array.isArray(friend.content)
+    ? friend.content.map(createFriendContentBlock).filter(Boolean)
+    : [];
+  if (contentBlocks.length) {
+    container.replaceChildren(...contentBlocks);
+    return;
+  }
+  // 旧数据继续支持单个字符串或字符串数组。
   const bioParagraphs = Array.isArray(friend.bio) ? friend.bio : [friend.bio];
-  bioContainer.replaceChildren(...bioParagraphs
+  container.replaceChildren(...bioParagraphs
     .filter(paragraph => typeof paragraph === "string" && paragraph.trim())
     .map(paragraph => {
       const element = document.createElement("p");
       element.textContent = paragraph.trim();
       return element;
     }));
+}
 
-  // 每次切换好友都重建照片，避免上一位好友的照片或加载回调残留。
+function renderFriendProfile(friend) {
+  const profile = document.querySelector(".friend-profile");
+  const profileHeader = document.querySelector(".friend-profile-header");
+  const coverContainer = document.getElementById("friend-profile-cover");
   const photoContainer = document.getElementById("friend-profile-photo");
-  const profileHeader = photoContainer.closest(".friend-profile-header");
+  profile.dataset.friendId = friend.id;
+  profile.classList.remove("has-cover");
+  profileHeader.classList.remove("has-photo");
+  coverContainer.replaceChildren();
+  coverContainer.hidden = true;
+  coverContainer.style.removeProperty("--cover-position");
+  coverContainer.style.removeProperty("--cover-position-mobile");
   photoContainer.replaceChildren();
   photoContainer.hidden = true;
-  profileHeader.classList.remove("has-photo");
-  if (typeof friend.photo === "string" && friend.photo.trim()) {
-    const photo = document.createElement("img");
-    photo.alt = `${friend.name}的照片`;
-    photo.width = 176;
-    photo.height = 176;
-    photo.decoding = "async";
-    photo.style.objectPosition = friend.photoPosition || "center";
+
+  document.getElementById("friend-profile-avatar").textContent = friend.avatar;
+  document.getElementById("friend-profile-name").textContent = friend.name;
+  document.getElementById("friend-profile-description").textContent = friend.description;
+  renderFriendContent(friend, document.getElementById("friend-profile-bio"));
+
+  const renderLegacyPhoto = () => {
+    if (profile.dataset.friendId !== friend.id || profile.classList.contains("has-cover")) return;
+    photoContainer.replaceChildren();
+    photoContainer.hidden = true;
+    profileHeader.classList.remove("has-photo");
+    const photo = createFriendImage(friend.photo, `${friend.name}的照片`, {
+      lazy: false,
+      width: 176,
+      height: 176,
+      position: friend.photoPosition || "center"
+    });
+    if (!photo) return;
     photo.onload = () => {
-      if (photo.parentElement !== photoContainer) return;
+      if (profile.dataset.friendId !== friend.id || photo.parentElement !== photoContainer) return;
       photoContainer.hidden = false;
       profileHeader.classList.add("has-photo");
     };
@@ -253,7 +363,35 @@ function renderFriendProfile(friend) {
       photo.remove();
     };
     photoContainer.append(photo);
-    photo.src = friend.photo.trim();
+  };
+
+  const cover = friend.cover && typeof friend.cover === "object" ? friend.cover : null;
+  const coverImage = cover && createFriendImage(cover.src, `${friend.name}的封面照片`, {
+    lazy: false,
+    width: 1200,
+    height: 600
+  });
+  if (coverImage) {
+    coverContainer.style.setProperty("--cover-position", cover.position || "center");
+    coverContainer.style.setProperty("--cover-position-mobile", cover.mobilePosition || cover.position || "center");
+    coverImage.onload = () => {
+      if (profile.dataset.friendId !== friend.id || coverImage.parentElement !== coverContainer) return;
+      coverContainer.hidden = false;
+      profile.classList.add("has-cover");
+      photoContainer.replaceChildren();
+      photoContainer.hidden = true;
+      profileHeader.classList.remove("has-photo");
+    };
+    coverImage.onerror = () => {
+      if (coverImage.parentElement !== coverContainer) return;
+      coverImage.remove();
+      coverContainer.hidden = true;
+      profile.classList.remove("has-cover");
+      renderLegacyPhoto();
+    };
+    coverContainer.append(coverImage);
+  } else {
+    renderLegacyPhoto();
   }
 
   const homepage = document.getElementById("friend-homepage");

@@ -15,7 +15,7 @@
     <base href="/">
     <link rel="canonical" href="https://huangminjin.com/">
     <link rel="icon" href="images/littlechick.webp?v=20261005" type="image/webp">
-    <link rel="stylesheet" href="styles.css?v=20261005-polish41">
+    <link rel="stylesheet" href="styles.css?v=20261005-profile-balance">
   </head>
   <body>
     <div class="shell">
@@ -226,20 +226,23 @@
             <a class="back" href="/Friends">← 返回好友列表</a>
           </div>
           <article class="friend-profile">
-            <header class="friend-profile-header">
-              <span class="friend-profile-avatar" id="friend-profile-avatar" aria-hidden="true"></span>
-              <div class="friend-profile-identity">
-                <h1 id="friend-profile-name"></h1>
-                <p id="friend-profile-description"></p>
-              </div>
-              <div class="friend-profile-photo" id="friend-profile-photo" hidden></div>
-            </header>
+            <div class="friend-profile-hero">
+              <div class="friend-profile-cover" id="friend-profile-cover" hidden></div>
+              <header class="friend-profile-header friend-profile-identity-card">
+                <span class="friend-profile-avatar" id="friend-profile-avatar" aria-hidden="true"></span>
+                <div class="friend-profile-identity">
+                  <h1 id="friend-profile-name"></h1>
+                  <p id="friend-profile-description"></p>
+                  <a class="friend-homepage" id="friend-homepage" href="#" target="_blank" rel="noopener noreferrer" hidden>
+                    访问个人主页 <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+                <div class="friend-profile-photo" id="friend-profile-photo" hidden></div>
+              </header>
+            </div>
             <section class="friend-profile-about">
               <h2>关于 TA</h2>
               <div class="friend-profile-bio" id="friend-profile-bio"></div>
-              <a class="friend-homepage" id="friend-homepage" href="#" target="_blank" rel="noopener noreferrer" hidden>
-                访问个人主页 <span aria-hidden="true">↗</span>
-              </a>
             </section>
           </article>
         </section>
@@ -300,11 +303,11 @@
       </main>
     </div>
     <script src="diaries.js?v=20261005-journal" defer></script>
-    <script src="friends.js?v=20261004-4" defer></script>
+    <script src="friends.js?v=20261005-profile-balance" defer></script>
     <script src="projects.js?v=20261004-quality2" defer></script>
-    <script src="journey.js?v=20261005-aurora" defer></script>
+    <script src="journey.js?v=20261005-brand" defer></script>
     <script src="skills.js?v=20261005-cn" defer></script>
-    <script src="blog.js?v=20261005-copy-cleanup" defer></script>
+    <script src="blog.js?v=20261005-profile-balance" defer></script>
   </body>
 </html>
 

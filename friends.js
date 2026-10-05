@@ -4,6 +4,8 @@
 // photo 可填写站点图片路径（如 images/friends/liu-jianxing.webp），在详情页名称右侧展示。
 // 留空或图片加载失败时自动隐藏照片区域；photoPosition 可选（如 "center 30%"）以调整裁切位置。
 // bio 可写成普通字符串；需要多段简介时，改为字符串数组，每一项会显示为独立段落。
+// cover 可选，用于详情页横向封面；position 与 mobilePosition 分别控制桌面、手机构图。
+// content 可选，支持 text、image、gallery、quote 四种块；存在有效块时优先于 bio 渲染。
 // showOnHome: true 表示首页展示；false 或不填写表示只放在完整好友列表中。
 // 首页最多显示 3 位；若选择超过 3 位，按此数组顺序显示前 3 位。调整对象顺序即可调整展示顺序。
 
@@ -21,6 +23,13 @@ const friends = [
       "三角洲从不玩突击位之人",
       "大山中学zfh最享福之人",
       "排球的伙伴，篮球的浓眉"
+    ],
+    content: [
+      { type: "text", text: "高中同学、高中睡友。" },
+      { type: "text", text: "黎明杀机最佳军团代言人" },
+      { type: "text", text: "三角洲从不玩突击位之人" },
+      { type: "text", text: "大山中学zfh最享福之人" },
+      { type: "text", text: "排球的伙伴，篮球的浓眉" }
     ],
     url: " "
   },
@@ -42,7 +51,7 @@ const friends = [
     showOnHome: true,
     name: "Harrisang",
     avatar: "HRS",
-    photo: "",
+    photo: "images/friends/czj.jpg",
     description: "天使之翼",
     bio: [
       "最近在健身，听说已经练出天使之翼",
@@ -76,7 +85,12 @@ const friends = [
     showOnHome: false,
     name: "Nigger",
     avatar: "N",
-    photo: "",
+    photo: "images/friends/csh.jpg",
+    cover: {
+      src: "images/friends/csh.jpg",
+      position: "center 10%",
+      mobilePosition: "center center"
+    },
     description: "大内哥",
     bio: "初中同学、香港人",
     url: " "
