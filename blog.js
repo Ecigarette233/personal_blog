@@ -154,7 +154,6 @@ function renderFriends() {
   document.getElementById("friends-list").innerHTML = homeFriends.map(renderFriendCard).join("");
   document.getElementById("friends").hidden = homeFriends.length === 0;
   document.getElementById("all-friends-list").innerHTML = friends.map(renderFriendCard).join("");
-  document.getElementById("friends-count").textContent = friends.length;
   document.getElementById("friends-empty").hidden = friends.length !== 0;
 }
 

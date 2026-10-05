@@ -3,7 +3,7 @@
 const skillGroups = [
   {
     id: "currently-using",
-    title: "Currently Using / 正在使用",
+    title: "正在使用",
     items: [
       "C / C++",
       "HTML / CSS",
@@ -14,7 +14,7 @@ const skillGroups = [
   },
   {
     id: "currently-learning",
-    title: "Currently Learning / 正在学习",
+    title: "正在学习",
     items: [
       "Linux",
       "Java",
@@ -24,7 +24,7 @@ const skillGroups = [
   },
   {
     id: "cs-foundations",
-    title: "CS Foundations / 专业基础",
+    title: "专业基础",
     items: [
       "数据结构与算法",
       "计算机组成原理",

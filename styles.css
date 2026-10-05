@@ -1,6 +1,7 @@
 /* 用途：控制博客的冷白、冰蓝与樱粉配色、字体、侧边栏、头像、卡片及手机端响应式布局。修改外观时编辑本文件。 */
 
 :root {
+  --font-ui: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   /* Pearl White × Ice Blue × Sakura Pink：普通区域中性，颜色用于强调。 */
   --paper: #f7f9fc;
   --ink: #242833;
@@ -47,7 +48,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  font-family: var(--font-ui);
   font-size: 14px;
   line-height: 1.8;
 }
@@ -106,7 +107,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 .brand {
-  font: 500 23px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  font: 500 23px var(--font-ui);
   letter-spacing: 2px;
 }
 
@@ -171,7 +172,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 .side-post time {
-  font: 10px monospace;
+  font: 10px var(--font-ui);
   color: var(--muted);
 }
 
@@ -277,7 +278,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 
 .topbar > span:last-child {
   flex: 0 0 auto;
-  font-family: monospace;
+  font-family: var(--font-ui);
 }
 
 .hero {
@@ -302,7 +303,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 h1 {
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: var(--font-ui);
   font-size: 42px;
   line-height: 1.25;
   letter-spacing: 0;
@@ -330,7 +331,7 @@ h1 {
 }
 
 .section-head h2 span {
-  font: 11px monospace;
+  font: 11px var(--font-ui);
   color: var(--accent);
   margin-right: 13px;
 }
@@ -401,7 +402,7 @@ h1 {
   color: var(--tag-ink);
   padding: 4px 9px;
   border-radius: 5px;
-  font: 12px/1.6 "Segoe UI", "Microsoft YaHei", sans-serif;
+  font: 12px/1.6 var(--font-ui);
 }
 
 .skills span:first-child {
@@ -420,7 +421,7 @@ h1 {
 }
 
 .post-meta {
-  font: 10px monospace;
+  font: 10px var(--font-ui);
   color: var(--muted);
   display: flex;
   gap: 13px;
@@ -493,7 +494,7 @@ h1 {
   border-radius: 50%;
   background: var(--avatar-gradient);
   color: var(--surface-solid);
-  font: 600 14px monospace;
+  font: 600 14px var(--font-ui);
 }
 
 .friend-info {
@@ -587,7 +588,7 @@ h1 {
   background: var(--avatar-gradient);
   box-shadow: 0 12px 30px rgba(var(--shadow-rgb), .10);
   color: var(--surface-solid);
-  font: 600 22px monospace;
+  font: 600 22px var(--font-ui);
 }
 
 .friend-profile-header h1 {
@@ -728,7 +729,7 @@ footer {
   padding: 20px 0 25px;
   display: flex;
   justify-content: space-between;
-  font: 10px monospace;
+  font: 10px var(--font-ui);
   color: var(--muted);
 }
 
@@ -1413,7 +1414,7 @@ input[type=search]::placeholder {
 .project-date {
   margin: 0 0 4px;
   color: var(--muted);
-  font: 11px/1.4 monospace;
+  font: 11px/1.4 var(--font-ui);
 }
 
 .project-card h2 {
@@ -1530,7 +1531,7 @@ a.contact-card:hover {
   display: block;
   margin-bottom: 8px;
   color: var(--accent);
-  font: 11px/1.4 monospace;
+  font: 11px/1.4 var(--font-ui);
 }
 
 .journey-preview-item h3 {
