@@ -14,20 +14,22 @@
   --blue: #5b8cff;
   --blue-light: #8eb7ff;
   --blue-soft: rgba(91, 140, 255, .08);
-  --cyan: #6ddcff;
-  --violet: #8b5cf6;
+  --cyan: #69d9ff;
+  --violet: #865df4;
   --violet-light: #b69cff;
   --violet-ink: #6942b5;
-  --pink: #f36fac;
+  --pink: #ef6fa9;
   --pink-light: #ffacd0;
   --pink-soft: rgba(243, 111, 172, .09);
   --pink-ink: #a03f70;
   --surface: rgba(255, 255, 255, .72);
-  --surface-glass: rgba(255, 255, 255, .56);
+  --surface-glass: rgba(255, 255, 255, .50);
   --surface-strong: rgba(255, 255, 255, .84);
   --surface-solid: #ffffff;
-  --surface-sidebar: rgba(248, 250, 255, .50);
+  --surface-sidebar: rgba(248, 250, 255, .44);
   --glass-edge: rgba(255, 255, 255, .78);
+  --cool-edge: rgba(100, 130, 210, .22);
+  --cyan-edge: rgba(65, 164, 224, .48);
   --tag-surface: rgba(231, 239, 255, .48);
   --tag-ink: #3b4969;
   --selection: #d4e5ff;
@@ -37,24 +39,28 @@
   --portrait-shadow-rgb: 63, 95, 180;
   --glow-blue: rgba(91, 140, 255, .18);
   --glow-violet: rgba(139, 92, 246, .12);
-  --glow-pink: rgba(243, 111, 172, .12);
+  --glow-pink: rgba(239, 111, 169, .08);
   --glow-cyan: rgba(109, 220, 255, .18);
   --focus-ring: rgba(91, 140, 255, .20);
-  --grid-line: rgba(98, 132, 194, .035);
+  --grid-line: rgba(98, 132, 194, .042);
   --shadow: 0 14px 34px rgba(var(--shadow-rgb), .065), inset 0 1px var(--glass-edge);
   --shadow-hover: 0 18px 42px rgba(91, 140, 255, .11), 0 0 26px rgba(139, 92, 246, .06), inset 0 1px var(--glass-edge);
-  /* 白字控件采用略深的同色系；环境光与细边使用明亮色。 */
-  --gradient-main: linear-gradient(120deg, #406bd0 0%, #5b67d6 48%, #8152ce 78%, #b94a83 100%);
+  --shadow-panel: 0 10px 24px rgba(var(--shadow-rgb), .055), inset 0 1px var(--glass-edge);
+  --shadow-panel-hover: 0 12px 28px rgba(91, 140, 255, .10), 0 0 18px rgba(134, 93, 244, .05), inset 0 1px var(--glass-edge);
+  --shadow-nav: 0 8px 20px rgba(70, 110, 230, .16), 0 0 16px rgba(120, 90, 230, .08), inset 0 1px var(--glow-cyan);
+  /* 控件保留白字对比度；提高蓝的饱和度和占比，粉只落在尾端。 */
+  --gradient-main: linear-gradient(110deg, #4171e0 0%, #506de4 52%, #815ce7 86%, #bf4a8a 100%);
   --gradient-accent: linear-gradient(110deg, var(--blue), var(--violet));
-  --gradient-edge: linear-gradient(100deg, var(--cyan), var(--blue) 32%, var(--violet) 72%, var(--pink));
+  --gradient-cool: linear-gradient(115deg, var(--cyan), var(--blue) 60%, var(--violet));
+  --gradient-edge: linear-gradient(100deg, var(--cyan), var(--blue) 42%, var(--violet) 86%, var(--pink));
   --gradient-page: linear-gradient(120deg, var(--accent), var(--violet-ink));
-  --avatar-gradient: linear-gradient(135deg, var(--blue), var(--violet-light) 72%, var(--pink-light));
+  --avatar-gradient: linear-gradient(135deg, var(--blue) 12%, var(--violet-light) 86%, var(--pink-light));
   --status-gradient: linear-gradient(120deg, var(--blue-soft), rgba(139, 92, 246, .07), var(--pink-soft));
   --aurora-background:
-    radial-gradient(ellipse at 10% 8%, rgba(91, 140, 255, .20), transparent 48%),
-    radial-gradient(ellipse at 88% 20%, rgba(139, 92, 246, .10), transparent 34%),
-    radial-gradient(ellipse at 62% 95%, rgba(243, 111, 172, .11), transparent 38%),
-    radial-gradient(ellipse at 3% 65%, rgba(109, 220, 255, .12), transparent 42%);
+    radial-gradient(ellipse at 10% 8%, rgba(91, 140, 255, .19), transparent 36%),
+    radial-gradient(ellipse at 88% 20%, rgba(134, 93, 244, .09), transparent 30%),
+    radial-gradient(ellipse at 62% 95%, rgba(239, 111, 169, .07), transparent 30%),
+    radial-gradient(ellipse at 3% 28%, rgba(105, 217, 255, .13), transparent 32%);
   scrollbar-gutter: stable;
 }
 
@@ -124,6 +130,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 
 ::selection {
   background: var(--selection);
+  color: var(--ink);
 }
 
 [hidden] {
@@ -140,7 +147,11 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 
 .sidebar {
   padding: 42px 28px;
-  border-right: 1px solid var(--line);
+  border-right: 1px solid var(--cool-edge);
+  background: var(--surface-sidebar);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset -1px 0 var(--glass-edge);
   position: sticky;
   top: 0;
   height: 100vh;
@@ -189,7 +200,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 .nav a.active {
   background: var(--gradient-main);
   color: var(--surface-solid);
-  box-shadow: 0 8px 24px var(--glow-blue), 0 0 22px var(--glow-violet), inset 0 1px var(--glass-edge);
+  box-shadow: var(--shadow-nav);
 }
 
 .nav-number {
@@ -333,16 +344,6 @@ button:focus-visible,a:focus-visible,input:focus-visible {
   pointer-events: none;
 }
 
-.topbar > span:last-child {
-  flex: 0 0 auto;
-  font-family: var(--font-ui);
-}
-
-.hero {
-  padding: 57px 0 43px;
-  position: relative;
-}
-
 .eyebrow {
   color: var(--accent);
   font-size: 11px;
@@ -369,7 +370,7 @@ h1 {
 }
 
 .section {
-  padding: 38px 0;
+  padding: 34px 0;
   border-bottom: 1px solid var(--line);
   scroll-margin-top: 24px;
 }
@@ -495,6 +496,7 @@ h1 {
   font: 10px var(--font-ui);
   color: var(--muted);
   display: flex;
+  flex-wrap: wrap;
   gap: 13px;
 }
 
@@ -774,6 +776,8 @@ a.contact-card:hover {
   height: 22px;
 }
 
+.contact-icon-github { border-color: var(--cyan-edge); }
+
 .contact-label {
   display: block;
   color: var(--muted);
@@ -813,8 +817,8 @@ footer {
   justify-content: space-between;
   flex-wrap: wrap;
   border-block: 1px solid var(--line);
-  padding: 20px 0;
-  margin-bottom: 25px;
+  padding: 16px 0;
+  margin-bottom: 16px;
 }
 
 .filters {
@@ -832,13 +836,13 @@ footer {
 }
 
 .filter.active {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
+  background: var(--gradient-main);
+  color: var(--surface-solid);
+  border-color: transparent;
 }
 
 input[type=search] {
-  background: transparent;
+  background: var(--surface);
   border: 1px solid var(--line);
   padding: 7px 12px;
   width: 210px;
@@ -846,6 +850,7 @@ input[type=search] {
 }
 
 .result-count {
+  margin-bottom: 16px;
   font-size: 11px;
   color: var(--muted);
 }
@@ -865,7 +870,7 @@ input[type=search] {
 }
 
 .article {
-  max-width: 720px;
+  max-width: 780px;
   margin: 28px auto 65px;
   min-height: 55vh;
 }
@@ -883,19 +888,25 @@ input[type=search] {
 }
 
 .article h1 {
-  font-size: 36px;
+  font-size: 35px;
   letter-spacing: 0;
   line-height: 1.5;
+  /* 长标题自然换行并平衡行长，避免末行只剩一个汉字。 */
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .article-body {
+  max-width: 720px;
   margin-top: 30px;
   font-size: 16px;
   line-height: 2.05;
+  overflow-wrap: anywhere;
 }
 
 .article-body p {
   margin: 0 0 26px;
+  white-space: pre-wrap;
 }
 
 .article-nav {
@@ -996,14 +1007,6 @@ input[type=search] {
     font-size: 10px;
   }
 
-  .hero {
-    padding: 34px 0;
-  }
-
-  .hero h1 {
-    font-size: 44px;
-  }
-
   .friends-grid,
   .contact-grid {
     grid-template-columns: 1fr;
@@ -1087,25 +1090,16 @@ footer {
   color: var(--accent-hover);
 }
 
-.filter.active {
-  background: var(--gradient-main);
-  border-color: transparent;
-  color: var(--surface-solid);
-}
-
-input[type=search] {
-  background: var(--surface);
-}
-
 input[type=search]::placeholder {
   color: var(--muted);
   opacity: 1;
 }
 
 input[type=search]:focus-visible {
-  border-color: var(--accent);
+  border-color: var(--cyan-edge);
+  outline-width: 1px;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--focus-ring);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .filter:not(.active):hover {
@@ -1113,12 +1107,8 @@ input[type=search]:focus-visible {
   border-color: var(--line-hover);
 }
 
-::selection {
-  background: var(--selection);
-  color: var(--ink);
-}
-
 .hero {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(170px, 200px) minmax(150px, .55fr) minmax(320px, 1.25fr);
   grid-template-areas:
@@ -1127,7 +1117,8 @@ input[type=search]:focus-visible {
   column-gap: 30px;
   row-gap: 18px;
   align-items: center;
-  padding-block: 44px;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .hero > .eyebrow {
@@ -1201,11 +1192,12 @@ input[type=search]:focus-visible {
   content: "";
   position: absolute;
   left: -1px;
-  top: 2px;
-  bottom: 2px;
+  top: 50%;
+  height: 38px;
+  transform: translateY(-50%);
   width: 1px;
-  background: var(--gradient-edge);
-  opacity: .55;
+  background: var(--gradient-cool);
+  opacity: .72;
   pointer-events: none;
 }
 
@@ -1241,13 +1233,14 @@ input[type=search]:focus-visible {
   content: "";
   position: absolute;
   z-index: -1;
-  inset: -22px;
+  inset: -18px;
   background:
-    radial-gradient(at 10% 10%, var(--blue-light), transparent 65%),
-    radial-gradient(at 95% 45%, var(--violet-light), transparent 65%),
-    radial-gradient(at 65% 100%, var(--pink-light), transparent 55%);
-  filter: blur(50px);
-  opacity: .36;
+    radial-gradient(at 10% 10%, var(--cyan), transparent 58%),
+    radial-gradient(at 12% 45%, var(--blue-light), transparent 58%),
+    radial-gradient(at 95% 45%, var(--violet-light), transparent 58%),
+    radial-gradient(at 65% 100%, var(--glow-pink), transparent 38%);
+  filter: blur(38px);
+  opacity: .34;
   pointer-events: none;
 }
 
@@ -1427,7 +1420,7 @@ input[type=search]:focus-visible {
 
 .timeline-card:hover {
   border-color: var(--line-hover);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--shadow-panel-hover);
 }
 
 .timeline-meta {
@@ -1481,25 +1474,7 @@ input[type=search]:focus-visible {
   .hero h1 { font-size: 30px; }
 }
 
-/* 玻璃按层级分配：侧栏与重点卡片折射背景，普通卡片仅保持透白。 */
-.sidebar {
-  background: var(--surface-sidebar);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: inset -1px 0 var(--glass-edge);
-}
-
-.section {
-  padding-block: 34px;
-}
-
-.section-intro {
-  max-width: 680px;
-  margin: -8px 0 22px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
+/* 项目以冷色细边表现材质，普通卡片继续使用安静的透白底。 */
 .project-list {
   display: grid;
   gap: 16px;
@@ -1515,19 +1490,19 @@ input[type=search]:focus-visible {
 .project-card {
   position: relative;
   padding: 26px 28px;
-  border: 1px solid var(--glass-edge);
+  border: 1px solid var(--cool-edge);
   border-radius: 12px;
   background: var(--surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-panel);
   transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 
 .project-card:hover {
   transform: translateY(-2px);
   border-color: var(--line-hover);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--shadow-panel-hover);
 }
 
 .project-card-head {
@@ -1555,12 +1530,12 @@ input[type=search]:focus-visible {
   content: "";
   position: absolute;
   left: -12px;
-  top: 22%;
-  bottom: 22%;
+  top: 14%;
+  bottom: 14%;
   width: 2px;
   border-radius: 2px;
-  background: var(--gradient-accent);
-  opacity: .65;
+  background: var(--gradient-cool);
+  opacity: .85;
   pointer-events: none;
 }
 
@@ -1592,7 +1567,7 @@ input[type=search]:focus-visible {
 .project-tech span {
   background: var(--tag-surface);
   padding: 3px 8px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--cool-edge);
   border-radius: 5px;
   color: var(--tag-ink);
   font-size: 11px;
@@ -1603,7 +1578,10 @@ input[type=search]:focus-visible {
 .skills span { transition: border-color .2s ease, background-color .2s ease; }
 
 .project-tech span:hover,
-.skills span:hover { border-color: var(--line-hover); background: var(--blue-soft); }
+.skills span:hover { background: var(--blue-soft); }
+
+.skills span:hover { border-color: var(--line-hover); }
+.project-tech span:hover { border-color: var(--cyan-edge); }
 
 .project-highlights {
   display: grid;
@@ -1639,8 +1617,7 @@ input[type=search]:focus-visible {
 }
 
 .friend-card,
-.contact-card,
-.timeline-card {
+.contact-card {
   box-shadow: var(--shadow);
   background: var(--surface);
   border-color: var(--glass-edge);
@@ -1668,6 +1645,8 @@ input[type=search]:focus-visible {
   opacity: .45;
   pointer-events: none;
 }
+
+.project-card::before { opacity: .66; }
 
 a.contact-card:not(.contact-card-email):hover {
   box-shadow: var(--shadow-hover), 0 0 24px var(--glow-cyan);
@@ -1824,8 +1803,6 @@ a.contact-card:hover {
   }
 }
 /* 日记归档：单列卡片，每页最多六篇，共享原有配色。 */
-.archive-tools { padding: 16px 0; margin-bottom: 16px; }
-.result-count { margin-bottom: 16px; }
 
 #archive-posts {
   display: grid;
@@ -1874,7 +1851,7 @@ a.contact-card:hover {
 }
 
 #archive-posts .latest:hover::before,
-#archive-posts .latest:focus-visible::before { opacity: .7; }
+#archive-posts .latest:focus-visible::before { opacity: .85; }
 
 #archive-posts .latest h3 {
   grid-area: title;
@@ -1943,9 +1920,6 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 }
 .page-link.disabled { opacity: .45; }
 .page-ellipsis { color: var(--muted); padding: 0 2px; }
-.article-body { overflow-wrap: anywhere; }
-.article-body p { white-space: pre-wrap; }
-.post-meta { flex-wrap: wrap; }
 
 @media (max-width: 900px) {
   #archive-posts .latest {
@@ -1967,10 +1941,6 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   #archive-posts { gap: 10px; }
   .page-controls { gap: 4px; }
   .page-link { min-width: 30px; padding-inline: 8px; }
-}
-
-.hero {
-  border-bottom: 1px solid var(--line);
 }
 
 /* 各独立页面共用页头：标签在左，标题在右。 */
@@ -2012,7 +1982,7 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   height: 3px;
   margin: 10px 0 0 auto;
   border-radius: 99px;
-  background: var(--gradient-accent);
+  background: var(--gradient-cool);
 }
 
 .page-header > p {
@@ -2092,7 +2062,7 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 @media(max-width:720px) {
   .sidebar { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .project-card,
-  .contact-card { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--surface); }
+  .contact-card { backdrop-filter: none; -webkit-backdrop-filter: none; }
   .portrait::before { inset: -12px; filter: blur(32px); opacity: .28; }
   body::after { background-size: 40px 40px; }
 }
