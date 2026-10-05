@@ -83,7 +83,7 @@ const friends = [
   {
     id: "CSH233",
     showOnHome: false,
-    name: "Nigger",
+    name: "大内哥",
     avatar: "N",
     photo: "images/friends/csh.jpg",
     cover: {
@@ -91,7 +91,7 @@ const friends = [
       position: "center 10%",
       mobilePosition: "center center"
     },
-    description: "大内哥",
+    description: "正黑旗刚果非洲黑人",
     bio: "初中同学、香港人",
     url: " "
   },

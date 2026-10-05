@@ -78,7 +78,7 @@ function formatJourneyDate(date) {
 function journeyLineColor(progress) {
   const blue = [65, 113, 224];
   const violet = [129, 92, 231];
-  const pink = [191, 74, 138];
+  const pink = [232, 91, 159];
   const [start, end, amount] = progress <= 0.55
     ? [blue, violet, progress / 0.55]
     : [violet, pink, (progress - 0.55) / 0.45];
