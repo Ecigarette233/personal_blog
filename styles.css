@@ -1,13 +1,37 @@
-/* 用途：控制博客的蓝粉紫渐变配色、字体、侧边栏、头像、卡片及手机端响应式布局。修改外观时编辑本文件。 */
+/* 用途：控制博客的冷白、冰蓝与樱粉配色、字体、侧边栏、头像、卡片及手机端响应式布局。修改外观时编辑本文件。 */
 
 :root {
-  --paper: #f8f7fc;
-  --ink: #292440;
-  --muted: #68637c;
-  --line: #ddd8ef;
-  --accent: #8d55d7;
-  --surface: rgba(255, 255, 255, .78);
-  --shadow: 0 10px 28px rgba(75, 54, 120, .07);
+  /* Pearl White × Ice Blue × Sakura Pink：普通区域中性，颜色用于强调。 */
+  --paper: #f7f9fc;
+  --ink: #242833;
+  --muted: #6b7280;
+  --line: #e3e8f0;
+  --line-hover: #b9c9e8;
+  /* 小字链接与白字按钮使用略深的蓝色，保证浅色背景上的可读性。 */
+  --accent: #4f6fc0;
+  --accent-hover: #385798;
+  --blue: #6f9fe8;
+  --blue-soft: #edf4ff;
+  --pink: #df94b6;
+  --pink-soft: #fff0f5;
+  --pink-ink: #a35478;
+  --purple-soft: #9a8ed8;
+  --surface: rgba(255, 255, 255, .88);
+  --surface-solid: #ffffff;
+  --tag-surface: #f4f7fb;
+  --tag-ink: #3c4350;
+  --selection: #dce8ff;
+  --portrait-ring: #d9e6f8;
+  --timeline-dot: #728fe4;
+  --shadow-rgb: 38, 50, 75;
+  --portrait-shadow-rgb: 50, 70, 110;
+  --shadow: 0 10px 30px rgba(var(--shadow-rgb), .06);
+  --shadow-hover: 0 14px 32px rgba(var(--shadow-rgb), .09);
+  --sidebar-gradient: linear-gradient(180deg, #f4f8ff 0%, #fafcff 55%, #fff8fb 100%);
+  /* 导航渐变使用较深的同色系，保留白字清晰度。 */
+  --nav-gradient: linear-gradient(110deg, #486eae, #5273b0 48%, #7070ad 78%, #a55c7b);
+  --avatar-gradient: linear-gradient(135deg, var(--blue), var(--purple-soft) 78%, var(--pink));
+  --status-gradient: linear-gradient(105deg, var(--blue-soft), #f3efff 60%, var(--pink-soft));
   scrollbar-gutter: stable;
 }
 
@@ -55,7 +79,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 ::selection {
-  background: #eed1b8;
+  background: var(--selection);
 }
 
 [hidden] {
@@ -113,14 +137,14 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 }
 
 .nav a:hover {
-  background: #e9e0f6;
+  background: var(--blue-soft);
   color: var(--ink);
 }
 
 .nav a.active {
-  background: linear-gradient(110deg,#6a91e3,#9b73d9 55%,#ce81b8);
-  color: #fff;
-  box-shadow: 0 5px 18px #9573d329;
+  background: var(--nav-gradient);
+  color: var(--surface-solid);
+  box-shadow: 0 5px 18px rgba(var(--shadow-rgb), .14);
 }
 
 .nav-number {
@@ -183,9 +207,9 @@ button:focus-visible,a:focus-visible,input:focus-visible {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #e2edff, #eedfff 58%, #ffe4f0);
-  color: #865bc3;
-  box-shadow: 0 5px 14px #8866b91a;
+  background: var(--pink-soft);
+  color: var(--pink-ink);
+  box-shadow: 0 5px 14px rgba(var(--shadow-rgb), .06);
 }
 
 .side-contact-icon svg {
@@ -247,7 +271,7 @@ button:focus-visible,a:focus-visible,input:focus-visible {
 .topbar-copy {
   padding-left: 0;
   border-left: 0;
-  color: #8a849d;
+  color: var(--muted);
   letter-spacing: 0;
 }
 
@@ -315,7 +339,7 @@ h1 {
 
 .about-copy p {
   margin: 0 0 12px;
-  color: #716981;
+  color: var(--ink);
   line-height: 2;
 }
 
@@ -350,10 +374,11 @@ h1 {
   width: 42px;
   height: 7px;
   border-radius: 99px;
-  background: linear-gradient(90deg,#719ce8,#a97ad8,#d98bbd);
+  background: var(--blue);
 }
 
 .skills-section h3 {
+  color: var(--accent);
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 14px;
@@ -372,8 +397,8 @@ h1 {
   width: fit-content;
   text-align: center;
   border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--tag-surface);
+  color: var(--tag-ink);
   padding: 4px 9px;
   border-radius: 5px;
   font: 12px/1.6 "Segoe UI", "Microsoft YaHei", sans-serif;
@@ -448,7 +473,7 @@ h1 {
   grid-template-columns: 42px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
-  border: 1px solid #ffffffa6;
+  border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
   transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
@@ -456,8 +481,8 @@ h1 {
 
 .friend-card:hover {
   transform: translateY(-3px);
-  border-color: #bc9fe2;
-  box-shadow: 0 10px 24px #9272c018;
+  border-color: var(--line-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 .friend-avatar {
@@ -466,8 +491,8 @@ h1 {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(135deg,#719ce8,#a97ad8 60%,#d98bbd);
-  color: #fff;
+  background: var(--avatar-gradient);
+  color: var(--surface-solid);
   font: 600 14px monospace;
 }
 
@@ -559,9 +584,9 @@ h1 {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(135deg,#719ce8,#a97ad8 60%,#d98bbd);
-  box-shadow: 0 12px 30px #9272c028;
-  color: #fff;
+  background: var(--avatar-gradient);
+  box-shadow: 0 12px 30px rgba(var(--shadow-rgb), .10);
+  color: var(--surface-solid);
   font: 600 22px monospace;
 }
 
@@ -577,9 +602,10 @@ h1 {
 }
 
 .friend-profile-about {
+  box-shadow: var(--shadow);
   margin-top: 30px;
   padding: 26px 28px;
-  border: 1px solid #ffffffa6;
+  border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
 }
@@ -593,7 +619,7 @@ h1 {
 .friend-profile-bio p {
   overflow-wrap: anywhere;
   margin: 0 0 12px;
-  color: #716981;
+  color: var(--ink);
   line-height: 2;
 }
 
@@ -628,7 +654,7 @@ h1 {
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #ffffff70;
+  background: var(--surface);
 }
 
 a.contact-card {
@@ -637,8 +663,8 @@ a.contact-card {
 
 a.contact-card:hover {
   transform: translateY(-3px);
-  border-color: #bc9fe2;
-  box-shadow: 0 10px 24px #9272c018;
+  border-color: var(--line-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 .contact-icon {
@@ -648,9 +674,9 @@ a.contact-card:hover {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  border: 1px solid #d9ccec;
-  background: linear-gradient(145deg,#f0f5ff,#f4edff 58%,#fff0f6);
-  color: #8461b7;
+  border: 1px solid var(--line);
+  background: var(--blue-soft);
+  color: var(--ink);
 }
 
 .contact-icon svg {
@@ -661,6 +687,11 @@ a.contact-card:hover {
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.contact-card-email .contact-icon {
+  background: var(--pink-soft);
+  color: var(--pink-ink);
 }
 
 .contact-icon-github svg {
@@ -972,28 +1003,38 @@ footer {
 
 }
 
-/* 重点元素沿用蓝紫粉主题。 */
+/* 蓝色负责交互，粉色仅用于少量生活与联系细节。 */
 .eyebrow,.all-link,.back,.post-meta .tag,.article-nav a {
-  color: #8752cb;
+  color: var(--accent);
 }
 
 .latest:hover h3,.side-post:hover p {
-  color: #9362cb;
+  color: var(--accent-hover);
 }
 
 .filter.active {
-  background: linear-gradient(110deg,#749ce7,#a478d7 60%,#ce88b9);
+  background: var(--accent);
   border-color: transparent;
-  color: #fff;
+  color: var(--surface-solid);
 }
 
 input[type=search] {
-  background: #ffffff66;
+  background: var(--surface-solid);
+}
+
+input[type=search]::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.filter:not(.active):hover {
+  background: var(--blue-soft);
+  border-color: var(--line-hover);
 }
 
 ::selection {
-  background: #ddc5f5;
-  color: #3c285b;
+  background: var(--selection);
+  color: var(--ink);
 }
 
 .hero {
@@ -1105,16 +1146,16 @@ input[type=search] {
   width: 100%;
   height: auto;
   aspect-ratio: 1 / 1;
-  border: 2px solid #ffffffcc;
+  border: 2px solid var(--surface-solid);
   border-radius: 16px;
   object-fit: cover;
   object-position: center 35%;
-  box-shadow: 0 14px 36px #7554a82e, 0 0 0 1px #b59bdb55;
+  box-shadow: 0 14px 36px rgba(var(--portrait-shadow-rgb), .10), 0 0 0 1px var(--portrait-ring);
   transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .portrait-photo:hover {
-  box-shadow: 0 18px 42px #7554a83d, 0 0 0 1px #aa89d966;
+  box-shadow: 0 18px 42px rgba(var(--portrait-shadow-rgb), .13), 0 0 0 1px var(--line-hover);
 }
 
 @media(max-width:1050px) and (min-width:721px) {
@@ -1220,10 +1261,10 @@ input[type=search] {
   grid-row: 1;
   width: calc(100% - 46px);
   padding: 12px 16px;
-  border: 1px solid #ffffffb8;
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background: linear-gradient(145deg,#e6efffb8,#eee3ffb8 58%,#ffe5f0b8);
-  box-shadow: 0 10px 28px #8065a510;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .timeline-left .timeline-card { grid-column: 1; justify-self: start; }
@@ -1260,12 +1301,12 @@ input[type=search] {
   transform: translate(-50%, -50%);
   border: 3px solid var(--paper);
   border-radius: 50%;
-  background: #9165d0;
-  box-shadow: 0 0 0 1px #9165d0;
+  background: var(--timeline-dot);
+  box-shadow: 0 0 0 1px var(--timeline-dot);
 }
 
 .timeline-item:last-child .timeline-dot {
-  box-shadow: 0 0 0 1px #9165d0, 0 0 0 5px #9165d018;
+  box-shadow: 0 0 0 1px var(--timeline-dot), 0 0 0 5px var(--blue-soft);
 }
 
 .timeline-meta {
@@ -1273,7 +1314,7 @@ input[type=search] {
   top: 10px;
   right: 14px;
   gap: 16px;
-  color: var(--accent);
+  color: var(--pink-ink);
   font-family: inherit;
   font-size: 11px;
   line-height: 1.5;
@@ -1319,9 +1360,9 @@ input[type=search] {
   .hero h1 { font-size: 30px; }
 }
 
-/* Digital Garden refinement：让大部分内容保持安静，只把渐变留给导航、头像与时间轴。 */
+/* 普通卡片保持冷白，渐变只用于导航、头像、状态和时间轴。 */
 .sidebar {
-  background: rgba(250, 249, 255, .92);
+  background: var(--sidebar-gradient);
 }
 
 .section {
@@ -1358,8 +1399,8 @@ input[type=search] {
 
 .project-card:hover {
   transform: translateY(-2px);
-  border-color: #c9b7e5;
-  box-shadow: 0 14px 30px rgba(75, 54, 120, .1);
+  border-color: var(--line-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 .project-card-head {
@@ -1386,8 +1427,8 @@ input[type=search] {
   flex: 0 0 auto;
   padding: 3px 9px;
   border-radius: 999px;
-  background: linear-gradient(105deg, #e4efff, #efe1ff 58%, #ffe5f0);
-  color: #6f4eaa;
+  background: var(--status-gradient);
+  color: var(--accent);
   font-size: 11px;
   font-weight: 600;
 }
@@ -1407,10 +1448,11 @@ input[type=search] {
 }
 
 .project-tech span {
+  background: var(--tag-surface);
   padding: 3px 8px;
   border: 1px solid var(--line);
   border-radius: 5px;
-  color: #554d68;
+  color: var(--tag-ink);
   font-size: 11px;
   line-height: 1.5;
 }
@@ -1422,7 +1464,7 @@ input[type=search] {
   margin: 18px 0 0;
   padding: 16px 0 0 18px;
   border-top: 1px solid var(--line);
-  color: #514a62;
+  color: var(--ink);
   font-size: 12px;
   line-height: 1.7;
 }
@@ -1445,12 +1487,13 @@ input[type=search] {
 }
 
 .project-actions a:hover {
-  color: #6540a3;
+  color: var(--accent-hover);
 }
 
 .friend-card,
 .contact-card,
 .timeline-card {
+  box-shadow: var(--shadow);
   background: var(--surface);
   border-color: var(--line);
 }
@@ -1467,6 +1510,7 @@ a.contact-card:hover {
 }
 
 .journey-preview-item {
+  box-shadow: var(--shadow);
   position: relative;
   min-width: 0;
   padding: 17px 18px;
@@ -1478,8 +1522,8 @@ a.contact-card:hover {
 
 .journey-preview-item:hover {
   transform: translateY(-2px);
-  border-color: #c9b7e5;
-  box-shadow: var(--shadow);
+  border-color: var(--line-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 .journey-preview-item time {
@@ -1611,6 +1655,7 @@ a.contact-card:hover {
 }
 
 #archive-posts .latest {
+  box-shadow: var(--shadow);
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) max-content;
@@ -1625,14 +1670,14 @@ a.contact-card:hover {
   padding: 16px 20px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: linear-gradient(145deg, #ffffffb3, #f2ecff80);
+  background: var(--surface);
   transition: border-color .2s, box-shadow .2s, transform .2s;
 }
 
 #archive-posts .latest:hover {
   transform: translateY(-3px);
-  border-color: #bc9fe2;
-  box-shadow: 0 10px 24px #9272c018;
+  border-color: var(--line-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 #archive-posts .latest h3 {
@@ -1689,15 +1734,16 @@ a.contact-card:hover {
   padding: 5px 10px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #ffffff80;
+  background: var(--surface-solid);
   font-size: 12px;
 }
 
 a.page-link:hover { border-color: var(--accent); color: var(--accent); }
-.page-link[aria-current="page"] {
+.page-link[aria-current="page"],
+.page-link[aria-current="page"]:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--surface-solid);
 }
 .page-link.disabled { opacity: .45; }
 .page-ellipsis { color: var(--muted); padding: 0 2px; }
@@ -1760,7 +1806,7 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   line-height: 1.25;
   letter-spacing: .025em;
   text-align: right;
-  text-shadow: 0 8px 24px #7650a212;
+  text-shadow: 0 8px 24px rgba(var(--shadow-rgb), .04);
 }
 
 .page-header h1:after {
@@ -1770,7 +1816,7 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   height: 3px;
   margin: 10px 0 0 auto;
   border-radius: 99px;
-  background: linear-gradient(90deg, #719ce8, #a97ad8 58%, #d98bbd);
+  background: var(--blue);
 }
 
 .page-header > p {

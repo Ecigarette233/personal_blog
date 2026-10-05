@@ -74,11 +74,11 @@ function formatJourneyDate(date) {
   return `${year}.${month}${day ? `.${day}` : ""}`;
 }
 
-// 相邻线段共享同一个接点颜色，让整条时间轴从紫色逐渐过渡到粉色。
+// 相邻线段共享同一个接点颜色；起止色与 styles.css 的 --blue / --pink 保持一致。
 function journeyLineColor(progress) {
-  const purple = [141, 85, 215];
-  const pink = [220, 145, 193];
-  return `rgb(${purple.map((channel, index) => Math.round(channel + (pink[index] - channel) * progress)).join(", ")})`;
+  const blue = [111, 159, 232];
+  const pink = [223, 148, 182];
+  return `rgb(${blue.map((channel, index) => Math.round(channel + (pink[index] - channel) * progress)).join(", ")})`;
 }
 
 // 可复用的单个时间轴卡片。总数用于分配渐变，不依赖卡片的固定高度。
