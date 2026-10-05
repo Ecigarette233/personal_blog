@@ -1,9 +1,42 @@
 ﻿// 用途：存放日记内容；首页、全部日记和文章详情读取这里的数据。
 // 新增日记：复制下面任意一个完整对象，粘贴到 diaries 数组中，对象之间用逗号分隔。
-// id 必须唯一，建议使用英文、数字和连字符；date 使用 YYYY-MM-DD 格式。
+// id 必须唯一，建议使用英文、数字和连字符；date 使用 YYYY-MM-DD，只知道月份时可写 YYYY-MM。
 // category 使用「技术」「随笔」或「生活」；body 中每个字符串对应一个正文段落。
 // 页面自动按 date 从新到旧排列；同日期保留数组顺序，首页显示最近 3 篇。
 const diaries = [
+  // 新增记录：正文暂留待补，后续直接替换 body 中的段落即可。
+  {
+    id: "changing-major-diary",
+    title: "转专业日记",
+    date: "2026-05-13",
+    category: "随笔",
+    excerpt: "记录转专业这件事。正文待补充。",
+    body: ["正文待补充。"]
+  },
+  {
+    id: "march-30-birthday-party",
+    title: "3月30日生日会",
+    date: "2026-03-30",
+    category: "生活",
+    excerpt: "记录今年 3 月 30 日的生日会。正文待补充。",
+    body: ["正文待补充。"]
+  },
+  {
+    id: "new-monitor-joy",
+    title: "购买新显示器带来的欣喜",
+    date: "2026-07",
+    category: "生活",
+    excerpt: "记录买到新显示器的欣喜。正文待补充。",
+    body: ["正文待补充。"]
+  },
+  {
+    id: "renting-a-home-diary",
+    title: "租房日记",
+    date: "2026-08-30",
+    category: "生活",
+    excerpt: "记录这次租房。正文待补充。",
+    body: ["正文待补充。"]
+  },
   // 技术类示例：复制整个对象后修改各项内容。
   {
     id: "build-a-personal-blog",

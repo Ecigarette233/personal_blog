@@ -1208,8 +1208,8 @@ input[type=search] {
   left: 50%;
   width: 2px;
   transform: translateX(-50%);
-  background: linear-gradient(#8c64d8, #d59bcc);
-  opacity: .55;
+  background: linear-gradient(var(--line-start), var(--line-end));
+  opacity: .65;
 }
 
 .timeline-item:first-child:before { top: 50%; }
@@ -1787,9 +1787,29 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 }
 
 #diary-view .archive-tools {
-  padding: 8px 0 18px;
-  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 8px 0 12px;
+  margin-bottom: 12px;
   border-block: 0;
+}
+
+.archive-filter-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  min-width: 0;
+}
+
+.archive-filter-group .result-count {
+  margin: 0;
+}
+
+#diary-view .archive-tools input {
+  margin-top: 0;
+  max-width: 100%;
 }
 
 #diary-view:not([hidden]) {
@@ -1802,6 +1822,12 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 #archive-pagination {
   margin-top: auto;
   margin-bottom: 0;
+  border-top: 0;
+}
+
+/* 日记页底部用留白分隔分页与页脚，避免上下两条横线夹住页码。 */
+#diary-view:not([hidden]) ~ footer {
+  border-top: 0;
 }
 
 .journey-page .timeline {
@@ -1813,6 +1839,7 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 .friends-page > .friends-grid { margin-top: 28px; }
 
 @media(max-width:720px) {
+  #diary-view .archive-tools { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .page-header { column-gap: 20px; padding: 34px 0 22px; }
   .page-header h1 { font-size: 32px; }
   .page-header .eyebrow { gap: 6px; font-size: 10px; letter-spacing: 1px; }

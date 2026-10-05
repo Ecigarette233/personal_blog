@@ -10,11 +10,11 @@ const journeyEvents = [
   {
     date: "2026-06",
     title: "英语六级 548 分",
-    description: "通过大学英语六级，为后续英语学习建立新的起点。",
+    description: "通过大学英语六级，英语学习到此为止……了吗？",
     type: "成绩"
   },
   {
-    date: "2026-05",
+    date: "2026-05-13",
     title: "成功转入计算机",
     description: "这真的是我想要的生活吗？",
     type: "选择"
@@ -22,7 +22,7 @@ const journeyEvents = [
   {
     date: "2026-04",
     title: "自学数据结构",
-    description: "从线性表、栈、队列和树开始，建立算法与 408 学习基础。",
+    description: "从线性表开始，初识 408 。",
     type: "学习"
   },
   {
@@ -56,6 +56,12 @@ const journeyEvents = [
     type: "学习"
   },
   {
+    date: "2025-07",
+    title: "被化工专业录取",
+    description: "也许我曾经真的很喜欢化学。",
+    type: "学习"
+  },
+  {
     date: "2025-06",
     title: "高考结束",
     description: "永别了，画廊学校。",
@@ -68,10 +74,19 @@ function formatJourneyDate(date) {
   return `${year}.${month}${day ? `.${day}` : ""}`;
 }
 
-// 可复用的单个时间轴卡片。event 字段与上方数组中的对象一致。
-function renderJourneyCard(event, index, escape) {
+// 相邻线段共享同一个接点颜色，让整条时间轴从紫色逐渐过渡到粉色。
+function journeyLineColor(progress) {
+  const purple = [141, 85, 215];
+  const pink = [220, 145, 193];
+  return `rgb(${purple.map((channel, index) => Math.round(channel + (pink[index] - channel) * progress)).join(", ")})`;
+}
+
+// 可复用的单个时间轴卡片。总数用于分配渐变，不依赖卡片的固定高度。
+function renderJourneyCard(event, index, escape, total = 1) {
+  const startColor = journeyLineColor(index / total);
+  const endColor = journeyLineColor((index + 1) / total);
   return `
-    <article class="timeline-item ${index % 2 === 0 ? "timeline-left" : "timeline-right"}">
+    <article class="timeline-item ${index % 2 === 0 ? "timeline-left" : "timeline-right"}" style="--line-start: ${startColor}; --line-end: ${endColor}">
       <time class="timeline-date" datetime="${escape(event.date)}">${escape(formatJourneyDate(event.date))}</time>
       <span class="timeline-dot" aria-hidden="true"></span>
       <div class="timeline-card">
@@ -86,7 +101,7 @@ function renderJourneyCard(event, index, escape) {
 // 完整时间轴组件：自动按时间从新到旧排序，再复用卡片组件。
 function renderJourney(container, escape) {
   const orderedEvents = [...journeyEvents].sort((a, b) => b.date.localeCompare(a.date));
-  container.innerHTML = orderedEvents.map((event, index) => renderJourneyCard(event, index, escape)).join("");
+  container.innerHTML = orderedEvents.map((event, index) => renderJourneyCard(event, index, escape, orderedEvents.length)).join("");
 }
 
 // 首页只展示最近的几个节点，完整记录仍由成长轨迹页面负责。

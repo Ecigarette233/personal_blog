@@ -21,7 +21,7 @@ function getSortedDiaries() {
     .filter(post => post && typeof post.id === "string" && post.id.trim())
     .map(post => ({
       ...post,
-      date: typeof post.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(post.date) ? post.date : "",
+      date: typeof post.date === "string" && /^\d{4}-\d{2}(?:-\d{2})?$/.test(post.date) ? post.date : "",
       title: typeof post.title === "string" && post.title.trim() ? post.title : "未命名日记",
       category: typeof post.category === "string" && post.category.trim() ? post.category : "未分类",
       excerpt: typeof post.excerpt === "string" ? post.excerpt : "",
@@ -401,13 +401,13 @@ function route() {
   if (view === "friend") replaceAddress(friendLink(friends[friendIndex]));
 
   const title = view === "article" ? post.title
-    : view === "friend" ? `${friends[friendIndex].name} · 好友简介`
+    : view === "friend" ? `好友简介 · ${friends[friendIndex].name}`
     : view === "friends" ? "我的好友"
     : view === "journey" ? "成长轨迹"
     : view === "projects" ? "个人项目"
     : view === "diary" ? "全部日记"
-    : view === "not-found" ? "404 · 页面没有找到" : "个人博客";
-  document.title = `${title} · 黄敏津`;
+    : view === "not-found" ? "404 · 页面没有找到" : "首页";
+  document.title = title;
   updateCanonicalUrl();
 
   if (view === "home" && ["about", "contact"].includes(anchor)) {
