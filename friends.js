@@ -243,20 +243,6 @@ const friends = [
     ],
     url: " "
   },
-  {
-    id: "",
-    showOnHome: false,
-    name: "",
-    avatar: "",
-    photo: "",
-    description: "",
-    tags: [""],
-    characterImage: "",
-    bio: [
-      "",
-    ],
-    url: " "
-  }
 ];
 
   // {
