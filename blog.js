@@ -1,5 +1,5 @@
-﻿// 用途：渲染博客各页面，维护路由、日记筛选、搜索、分页和文章前后篇导航。
-// 依赖：diaries.js、friends.js、projects.js、events.js、journey.js 和 skills.js 必须先加载。
+// 用途：渲染博客各页面，维护路由、日记筛选、搜索、分页和文章前后篇导航。
+// 依赖：diaries.js、friends.js、projects.js、events.js、journey.js、skills.js 和 content.js 必须先加载。
 // 本文件负责内容渲染、History API 路由、日记筛选与分页。
 
 // 页面元素与筛选状态。
@@ -27,8 +27,8 @@ function getSortedDiaries() {
       excerpt: typeof post.excerpt === "string" ? post.excerpt : "",
       body: (Array.isArray(post.body) ? post.body : [post.body])
         .filter(block => typeof block === "string" || (
-          block && typeof block === "object" && block.type === "image"
-          && typeof block.src === "string" && block.src.trim()
+          block && typeof block === "object" && ((block.type === "image" && typeof block.src === "string" && block.src.trim())
+            || ["heading", "quote", "list", "code"].includes(block.type))
         ))
     }))
     .sort((first, second) => second.date.localeCompare(first.date));
@@ -76,7 +76,7 @@ function renderPagination(id, page, total, linkForPage) {
 function diaryBlockText(block) {
   if (typeof block === "string") return block;
   if (!block || typeof block !== "object") return "";
-  return [block.alt, block.caption].filter(value => typeof value === "string").join(" ");
+  return [block.text, ...(Array.isArray(block.items) ? block.items : []), block.alt, block.caption].filter(value => typeof value === "string").join(" ");
 }
 
 // 长段落优先在标点处断开；使用 Unicode 字符切分，保留所有正文内容。
@@ -91,8 +91,10 @@ function paginateBody(body) {
   };
   body.forEach(block => {
     if (typeof block !== "string") {
-      if (length > ARTICLE_PAGE_SIZE * .85) flush();
+      const size = Array.from(diaryBlockText(block)).length;
+      if (length > ARTICLE_PAGE_SIZE * .85 || length + size > ARTICLE_PAGE_SIZE) flush();
       blocks.push(block);
+      if (block.type !== "image") length += size;
       return;
     }
 
@@ -127,6 +129,11 @@ function renderArticleBody(blocks) {
       return;
     }
 
+    const markdownElement = createMarkdownBlock(block);
+    if (markdownElement) {
+      fragment.append(markdownElement);
+      return;
+    }
     if (!block || block.type !== "image" || typeof block.src !== "string") return;
     const figure = document.createElement("figure");
     figure.className = "article-media";
@@ -715,7 +722,10 @@ function updateFilters() {
   });
 }
 
-function initialize() {
+async function initialize() {
+  // 先并行读取独立文件，保持全文搜索和同步路由原有行为。
+  document.getElementById("main").setAttribute("aria-busy", "true");
+  await loadSiteContent();
   renderMajorEvents();
   renderRecentPosts();
   renderFriends();
@@ -754,6 +764,7 @@ function initialize() {
   window.addEventListener("popstate", route);
   window.addEventListener("hashchange", route);
   route();
+  document.getElementById("main").removeAttribute("aria-busy");
 }
 
 initialize();

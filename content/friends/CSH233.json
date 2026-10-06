@@ -1,0 +1,28 @@
+{
+  "id": "CSH233",
+  "showOnHome": false,
+  "name": "Henlin",
+  "avatar": "H",
+  "photo": "images/friends/csh.jpg",
+  "cover": {
+    "src": "images/friends/csh.jpg",
+    "position": "center 10%",
+    "mobilePosition": "center center",
+    "cardLeft": 32,
+    "cardBottom": -28
+  },
+  "description": "大内哥",
+  "tags": [
+    "初中同学"
+  ],
+  "bio": [
+    "香港人、非洲黑人",
+    "CS2历史第一指挥兼狙击手",
+    "最佳CS2上分搭档",
+    "雅思口语7.5",
+    "纯血外国人",
+    "香港全额奖学金",
+    "上过电视"
+  ],
+  "url": " "
+}

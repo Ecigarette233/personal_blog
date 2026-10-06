@@ -1,0 +1,33 @@
+{
+  "id": "NIUZI",
+  "showOnHome": false,
+  "name": "牛子",
+  "avatar": "🐮",
+  "photo": "",
+  "description": "篮球队长",
+  "tags": [
+    "小学同学",
+    "初中同学",
+    "大学同学"
+  ],
+  "characterImage": "images/friends/niuzi-harden-character.png",
+  "characterOptions": {
+    "scale": 1.3,
+    "right": 0,
+    "bottom": 0,
+    "footOffset": 3.8,
+    "mobileScale": 1
+  },
+  "bio": [
+    "Favourite player : James Harden",
+    "院队小前锋",
+    "2018年常规赛MVP",
+    "得分王、助攻王、最佳第六人",
+    "打爆虎扑奖",
+    "五年抗勇奖",
+    "NBA孔子奖",
+    "费城大庆典",
+    "错哥，我们登了"
+  ],
+  "url": " "
+}

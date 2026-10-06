@@ -1,0 +1,37 @@
+{
+  "id": "hlschoolgaozhongsheng",
+  "showOnHome": true,
+  "name": "萎哥",
+  "avatar": "Q",
+  "photo": "images/friends/ljx.jpg",
+  "description": "QQ、萎",
+  "tags": [
+    "高中同学",
+    "高中睡友"
+  ],
+  "bio": [
+    "黎明杀机最佳军团代言人",
+    "三角洲从不玩突击位之人",
+    "大山中学zfh最享福之人",
+    "排球的伙伴，篮球的浓眉"
+  ],
+  "content": [
+    {
+      "type": "text",
+      "text": "黎明杀机最佳军团代言人"
+    },
+    {
+      "type": "text",
+      "text": "三角洲从不玩突击位之人"
+    },
+    {
+      "type": "text",
+      "text": "大山中学zfh最享福之人"
+    },
+    {
+      "type": "text",
+      "text": "排球的伙伴，篮球的浓眉"
+    }
+  ],
+  "url": " "
+}
