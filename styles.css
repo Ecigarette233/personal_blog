@@ -630,26 +630,27 @@ h1 {
   color: var(--accent);
 }
 
+/* 共用好友详情：背景照片或人物立绘是主视觉，信息统一收进液态玻璃卡。
+   信息卡宽度控制在左侧约 45%~55%，右侧保留留白。 */
+#friend-view:not([hidden]) { display: flex; flex-direction: column; flex: 1; }
+
 .friend-profile {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
   max-width: 920px;
-  margin: 28px auto 65px;
-  min-height: 55vh;
+  flex: 1;
+  margin: 26px auto 0;
+  padding-bottom: 28px;
+  /* 身份卡与“关于 TA”卡共用同一宽度，保证两张卡左边缘对齐。 */
+  --info-card-width: min(100%, 480px);
 }
 
-.friend-profile-header {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 25px;
-  align-items: center;
-  max-width: 680px;
-  margin: 28px auto 0;
-  padding-bottom: 32px;
-  border-bottom: 1px solid var(--line);
-}
+.friend-profile-hero { position: relative; }
 
 .friend-profile-toolbar {
+  position: relative;
+  z-index: 2;
   padding-top: 42px;
   display: flex;
   justify-content: space-between;
@@ -658,29 +659,124 @@ h1 {
   gap: 14px 20px;
 }
 
-.friend-profile-toolbar .back {
-  margin-left: auto;
-  white-space: nowrap;
+.friend-profile-toolbar .back { margin-left: auto; white-space: nowrap; }
+
+/* 身份卡与介绍卡沿用站内统一的液态玻璃材质：与 .journey-preview-item 一样
+   只有半透明白底、1px 玻璃描边和中性阴影，不再加顶部品牌渐变细边。 */
+.friend-profile-header,
+.friend-profile-about {
+  position: relative;
+  padding: 20px 22px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  background: var(--glass-project);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: var(--shadow-panel);
 }
 
-.friend-profile-header.has-photo {
-  grid-template-columns: 92px minmax(0, 1fr) 176px;
+.friend-profile-header {
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  width: min(var(--info-card-width), 100%);
+  margin: 0;
 }
 
+.friend-profile-header.has-avatar { grid-template-columns: 80px minmax(0, 1fr); }
+/* 有照片时照片本身就是头像：正方形、圆角，四周与卡片边框留 10px。 */
+.friend-profile-header.has-photo-avatar {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0;
+  align-items: center;
+  padding: 10px;
+}
 .friend-profile-identity { min-width: 0; overflow-wrap: anywhere; }
 
-.friend-profile-hero {
-  position: relative;
+.friend-profile-avatar {
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--gradient-avatar);
+  box-shadow: 0 12px 30px rgba(var(--shadow-rgb), .10);
+  color: var(--surface-solid);
+  font: 600 20px var(--font-ui);
 }
 
+/* 有照片时照片本身就是头像：正方形 + 圆角，描边与外圈细环仿主页个人简介头像。 */
+.friend-profile-avatar.has-image {
+  width: 180px;
+  height: 180px;
+  border: 2px solid var(--glass-edge);
+  border-radius: 16px;
+  background: var(--glass-medium);
+  box-shadow: 0 10px 24px rgba(var(--portrait-shadow-rgb), .14), 0 0 0 1px var(--portrait-ring);
+}
+
+/* 方形头像旁边的姓名与副标题自己保留内边距并垂直居中。 */
+.friend-profile-header.has-photo-avatar .friend-profile-identity {
+  align-self: center;
+  padding: 8px 16px 8px 20px;
+}
+
+.friend-profile-avatar-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.friend-profile-header h1 { margin: 0; font-size: 36px; line-height: 1.3; }
+#friend-profile-description { margin: 8px 0 0; color: var(--muted); }
+
+/* 关系标签和正文同处介绍卡：标签在上，正文在下。 */
+.friend-profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 15px;
+  padding: 0;
+}
+
+.friend-profile-tags:last-child { margin-bottom: 0; }
+
+.friend-profile-tags li {
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .36);
+  color: var(--accent);
+  font-size: 12px;
+}
+
+/* 介绍内容独立成卡，不再裸露在页面背景上；标题省略，卡面只放正文。 */
+.friend-profile-about {
+  z-index: 1;
+  width: min(var(--info-card-width), 100%);
+  margin: 30px 0 0;
+  padding: 24px 26px;
+}
+
+.friend-profile-about[hidden] { display: none; }
+
+.friend-profile-bio p { overflow-wrap: anywhere; margin: 0 0 12px; color: var(--ink); line-height: 1.9; }
+.friend-profile-bio p:last-child { margin-bottom: 0; }
+
+/* 普通好友：横向背景照片留在顶部，作为页面的主要视觉元素。 */
 .friend-profile.has-cover .friend-profile-hero {
   width: min(100%, 840px);
-  margin-bottom: 72px;
-  margin-inline: auto;
+  margin: 0 auto 86px;
 }
 
 .friend-profile-cover {
   position: relative;
+  width: 100%;
   height: clamp(220px, 24vw, 240px);
   overflow: hidden;
   border: 1px solid var(--glass-edge);
@@ -693,7 +789,7 @@ h1 {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, rgba(65, 113, 224, .25) 0%, rgba(80, 109, 228, .11) 40%, rgba(129, 92, 231, .16) 70%, rgba(232, 91, 159, .24) 100%);
+  background: linear-gradient(105deg, rgba(65,113,224,.25) 0%, rgba(80,109,228,.11) 40%, rgba(129,92,231,.16) 70%, rgba(232,91,159,.24) 100%);
   pointer-events: none;
 }
 
@@ -706,132 +802,105 @@ h1 {
   filter: saturate(.88) brightness(.96);
 }
 
+/* 身份卡悬浮覆盖在背景照片的左下边缘，并与下方介绍卡左对齐。
+   缩进与下悬距离由好友数据里的 cover.cardLeft / cover.cardBottom 决定（见 friends.js）。 */
 .friend-profile.has-cover .friend-profile-header {
   position: absolute;
-  left: 22px;
-  bottom: -24px;
-  grid-template-columns: 52px minmax(0, 1fr);
-  gap: 14px;
-  width: min(360px, calc(100% - 44px));
-  max-width: none;
-  margin: 0;
+  left: var(--cover-card-left, 32px);
+  bottom: var(--cover-card-bottom, -28px);
+  width: min(420px, calc(100% - var(--cover-card-left, 32px) * 2));
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 15px;
   padding: 16px 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, .67);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, .30);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 16px 38px rgba(55, 75, 160, .15), inset 0 1px rgba(255, 255, 255, .82);
-}
-
-.friend-profile.has-cover .friend-profile-header::before {
-  content: "";
-  position: absolute;
-  inset: -1px 7% auto;
-  height: 1px;
-  background: var(--gradient-brand-accent);
-  opacity: .88;
-  pointer-events: none;
-}
-
-.friend-profile-photo {
-  justify-self: end;
-  width: 176px;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 14px;
-  border: 1px solid var(--glass-edge);
-  background: var(--glass-medium);
-  box-shadow: var(--shadow);
-}
-
-.friend-profile-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.friend-profile-avatar {
-  width: 92px;
-  height: 92px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--gradient-avatar);
-  box-shadow: 0 12px 30px rgba(var(--shadow-rgb), .10);
-  color: var(--surface-solid);
-  font: 600 22px var(--font-ui);
 }
 
 .friend-profile.has-cover .friend-profile-avatar {
-  width: 52px;
-  height: 52px;
-  font-size: 15px;
+  width: 56px;
+  height: 56px;
+  font-size: 16px;
   box-shadow: 0 10px 24px rgba(65, 113, 224, .18);
 }
 
-.friend-profile-header h1 {
-  margin: 5px 0 0;
-  font-size: 36px;
-  line-height: 1.4;
-}
+.friend-profile.has-cover .friend-profile-header h1 { font-size: 26px; line-height: 1.25; }
+.friend-profile.has-cover #friend-profile-description { color: #404a67; }
 
-.friend-profile-header p {
-  margin: 3px 0 0;
-  color: var(--muted);
-}
-
-.friend-profile.has-cover .friend-profile-header h1 {
+.friend-profile.has-cover .friend-profile-about {
+  width: min(420px, calc(100% - var(--cover-card-left, 32px) * 2));
   margin-top: 0;
-  font-size: 26px;
-  line-height: 1.25;
+  margin-left: calc((100% - min(100%, 840px)) / 2 + var(--cover-card-left, 32px));
 }
 
-.friend-profile.has-cover .friend-profile-header p {
-  color: #404a67;
+.friend-profile.has-character {
+  --character-height: calc(clamp(420px, 60vh, 600px) * var(--character-scale, 1));
+  --character-width: calc(var(--character-height) * 2 / 3);
+  /* 人物立绘占住右侧，两张信息卡收在左侧并保持同宽。 */
+  --info-card-width: calc(100% - var(--character-width) - var(--character-right, 0%) - 24px);
+  min-height: var(--character-height);
+  padding-bottom: 0;
 }
 
-.friend-profile-about {
-  position: relative;
-  overflow: hidden;
-  max-width: 820px;
-  box-shadow: 0 16px 38px rgba(55, 75, 160, .09), inset 0 1px rgba(255, 255, 255, .76);
-  margin: 30px auto 0;
-  padding: 28px 30px;
-  border: 1px solid rgba(255, 255, 255, .64);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, .50);
-  backdrop-filter: blur(16px) saturate(135%);
-  -webkit-backdrop-filter: blur(16px) saturate(135%);
+/* 人物以资料区域底部（页脚上沿）为基准，footOffset 补偿 PNG 脚下透明留白。 */
+.friend-character {
+  position: absolute;
+  z-index: 0;
+  right: var(--character-right, 0%);
+  bottom: var(--character-bottom, 0px);
+  width: var(--character-width);
+  height: var(--character-height);
+  pointer-events: none;
+  user-select: none;
 }
 
-.friend-profile-about::before {
+.friend-character::before {
   content: "";
   position: absolute;
-  inset: 0 8% auto;
-  height: 1px;
-  background: var(--gradient-brand-accent);
-  opacity: .62;
+  inset: 16% 12% 13%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(243,139,203,.25), rgba(243,139,203,.10) 48%, transparent 72%);
+  filter: blur(24px);
 }
 
-.friend-profile.has-cover .friend-profile-about { margin-top: 0; }
-
-.friend-profile-about h2 {
-  margin: 2px 0 10px;
-  font-size: 18px;
-  font-weight: 600;
+.friend-character-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  transform: translateY(var(--character-footOffset, 0%));
+  filter: drop-shadow(0 0 12px rgba(232,91,159,.13));
 }
 
-.friend-profile-bio p {
-  overflow-wrap: anywhere;
-  margin: 0 0 12px;
-  color: var(--ink);
-  line-height: 2;
+@media (min-width: 901px) and (max-width: 1100px) {
+  .friend-profile.has-character { --character-height: calc(clamp(340px, 48vh, 460px) * var(--character-scale, 1)); }
+  .friend-profile.has-character .friend-profile-header.has-avatar { grid-template-columns: 64px minmax(0, 1fr); gap: 16px; }
+  .friend-profile.has-character .friend-profile-avatar { width: 64px; height: 64px; }
 }
 
-.friend-profile-bio p:last-child { margin-bottom: 0; }
+@media (max-width: 900px) {
+  /* 手机端：两张卡收在左侧，人物站在右侧介绍卡旁边的空白处，贴住内容底部。
+     页面高度由卡片撑开（flex: none，不再拉伸），姓名回到头像右边。
+     宽度用 vw 而不是百分比：百分比在 min-height 里无法参与解析。 */
+  .friend-profile.has-character {
+    --character-mobile-width: calc(clamp(150px, 48vw, 235px) * var(--character-mobileScale, 1));
+    --character-mobile-height: calc(var(--character-mobile-width) * 1.5);
+    --info-card-width: calc(100% - var(--character-mobile-width) - 16px);
+    flex: none;
+    min-height: var(--character-mobile-height);
+  }
+  /* 身份卡窄了也要保持「头像在左、姓名副标题在右」的一行排布。 */
+  .friend-profile.has-character .friend-profile-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 13px;
+  }
+  .friend-character {
+    top: auto;
+    bottom: 0;
+    width: var(--character-mobile-width);
+    height: var(--character-mobile-height);
+    margin: 0;
+  }
+}
 
 .friend-content-image,
 .friend-content-gallery figure {
@@ -2228,75 +2297,42 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   .page-header .eyebrow { gap: 6px; font-size: 10px; letter-spacing: 1px; }
   .page-header .eyebrow:before { width: 14px; }
 
-  .friend-profile {
-    margin: 22px auto 50px;
+  .friend-profile { margin: 22px auto 0; padding-bottom: 20px; }
+  .friend-profile-cover { height: 210px; border-radius: 14px; }
+  .friend-profile-cover img { object-position: var(--cover-position-mobile, var(--cover-position, center)); }
+  .friend-profile-header,
+  .friend-profile-header.has-avatar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
-
-  .friend-profile-cover {
-    height: 210px;
-    border-radius: 14px;
-  }
-
-  .friend-profile-cover img {
-    object-position: var(--cover-position-mobile, var(--cover-position, center));
-  }
-
-  .friend-profile-header {
-    grid-template-columns: 72px minmax(0, 1fr);
-    gap: 18px;
-    max-width: 100%;
-    padding-bottom: 24px;
-  }
-
-  .friend-profile-header.has-photo {
-    grid-template-columns: 44px minmax(0, 1fr) 88px;
-    gap: 12px;
-  }
-
-  .friend-profile-header.has-photo .friend-profile-avatar {
-    width: 44px;
-    height: 44px;
-    font-size: 13px;
-  }
-
-  .friend-profile-header.has-photo h1 { font-size: 24px; }
-  .friend-profile-photo { width: 88px; border-radius: 10px; }
-
-  .friend-profile-avatar {
-    width: 72px;
-    height: 72px;
-    font-size: 17px;
-  }
-
+  .friend-profile-avatar { width: 64px; height: 64px; font-size: 17px; }
   .friend-profile-header h1 { font-size: 28px; }
+  .friend-profile-about { padding: 22px 20px; }
 
+  /* 手机上仍是正方形圆角头像，只是缩小一档并靠左，与边框同样留 10px。 */
+  .friend-profile-header.has-photo-avatar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .friend-profile-avatar.has-image { width: 132px; height: 132px; justify-self: start; }
+  .friend-profile-header.has-photo-avatar .friend-profile-identity { padding: 12px 6px 4px; }
+
+  /* 身份卡在手机上仍悬浮覆盖照片左下边缘，缩进沿用同一个可调变量。 */
+  .friend-profile.has-cover .friend-profile-hero { margin-bottom: 74px; }
   .friend-profile.has-cover .friend-profile-header {
-    left: 12px;
-    bottom: -24px;
-    grid-template-columns: 46px minmax(0, 1fr);
-    width: calc(100% - 24px);
-    gap: 14px;
-    margin: 0;
-    padding: 14px 15px;
-    border-radius: 14px;
+    bottom: var(--cover-card-bottom, -20px);
+    width: calc(100% - var(--cover-card-left, 32px) * 2);
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 13px;
+    padding: 13px 15px;
+    border-radius: 18px;
   }
-
-  .friend-profile.has-cover .friend-profile-hero { margin-bottom: 66px; }
-
-  .friend-profile.has-cover .friend-profile-avatar {
-    width: 46px;
-    height: 46px;
-    font-size: 12px;
+  .friend-profile.has-cover .friend-profile-avatar { width: 48px; height: 48px; font-size: 14px; }
+  .friend-profile.has-cover .friend-profile-header h1 { font-size: 22px; }
+  .friend-profile.has-cover .friend-profile-about {
+    width: calc(100% - var(--cover-card-left, 32px) * 2);
+    margin-left: var(--cover-card-left, 32px);
   }
-
-  .friend-profile.has-cover .friend-profile-header h1 { font-size: 24px; }
-
-  .friend-profile-about {
-    margin-top: 24px;
-    padding: 22px 18px;
-  }
-
-  .friend-profile.has-cover .friend-profile-about { margin-top: 0; }
 
   .friend-content-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2306,13 +2342,6 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
 
 @media(max-width:390px) {
   .friend-profile-cover { height: 200px; }
-  .friend-profile.has-cover .friend-profile-header {
-    width: calc(100% - 16px);
-    left: 8px;
-    bottom: -26px;
-    margin: 0;
-    gap: 12px;
-  }
   .friend-content-gallery { grid-template-columns: 1fr; }
 }
 
@@ -2322,8 +2351,8 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   .project-card,
   .contact-card,
   .friend-card,
+  .friend-profile-header,
   .friend-profile-about,
-  .friend-profile.has-cover .friend-profile-header,
   .timeline-card,
   #archive-posts .latest {
     backdrop-filter: blur(10px) saturate(125%);
@@ -2338,8 +2367,8 @@ a.page-link:hover { border-color: var(--accent); color: var(--accent); }
   .project-card,
   .contact-card,
   .friend-card,
+  .friend-profile-header,
   .friend-profile-about,
-  .friend-profile.has-cover .friend-profile-header,
   .timeline-card,
   #archive-posts .latest { background: var(--surface-strong); }
 }

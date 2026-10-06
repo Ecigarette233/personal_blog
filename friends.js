@@ -1,13 +1,51 @@
-// 用途：存放好友资料；首页与侧边栏“好友”入口的列表共用这里的数据，自动生成卡片。
-// 新增好友：复制一个完整对象并修改内容，对象之间用逗号分隔。
-// id 用于生成站内简介链接；avatar 是头像文字；url 可选，用于展示好友的个人主页。
-// photo 可填写站点图片路径（如 images/friends/liu-jianxing.webp），在详情页名称右侧展示。
-// 留空或图片加载失败时自动隐藏照片区域；photoPosition 可选（如 "center 30%"）以调整裁切位置。
-// bio 可写成普通字符串；需要多段简介时，改为字符串数组，每一项会显示为独立段落。
-// cover 可选，用于详情页横向封面；position 与 mobilePosition 分别控制桌面、手机构图。
-// content 可选，支持 text、image、gallery、quote 四种块；存在有效块时优先于 bio 渲染。
-// showOnHome: true 表示首页展示；false 或不填写表示只放在完整好友列表中。
-// 首页最多显示 3 位；若选择超过 3 位，按此数组顺序显示前 3 位。调整对象顺序即可调整展示顺序。
+// 用途：存放好友资料；好友列表与好友详情页共用这里的数据，自动生成卡片。
+//
+// ══ 好友详情页模板：所有好友共用同一套版式，只改数据，不用改代码 ═══════════
+// 新增好友：复制下面任意一个完整对象，粘贴进 friends 数组，对象之间用逗号分隔。
+//
+// 【必填】
+//   id            唯一标识，用于生成 /Friend/{id} 链接
+//   name          姓名
+//
+// 【身份卡：头像 + 姓名 + 副标题】
+//   avatar        没有 photo 时显示的紫色首字母头像文字，如 "Q"、"🐮"
+//   description   副标题，一句话身份，如 "篮球队长"
+//   identity      可选；填了就替代 description 作为副标题
+//   photo         可选；填了照片路径后照片本身就是头像（120×140 圆角矩形），
+//                 不再显示紫色首字母；留空或加载失败会自动回退到 avatar
+//   photoPosition 可选；照片裁切位置，如 "center 35%"
+//
+// 【介绍卡：关系标签 + 正文】
+//   tags          可选；关系标签数组，如 ["初中同学", "大学同学"]。
+//                 凡是"和某人是什么关系"的说明都写进这里，不要再写进 bio
+//   bio           可选；正文，字符串或字符串数组，每一项显示为一段
+//   content       可选；结构化正文，支持 text / image / gallery / quote 四种块，
+//                 存在有效块时优先于 bio
+//
+// 【想给某位好友加顶部背景照】照抄 Henlin 的 cover，版式与位置会自动和 Henlin 一致：
+//   cover: {
+//     src: "images/friends/xxx.jpg",
+//     position: "center 10%",           // 桌面裁切位置
+//     mobilePosition: "center center",  // 手机裁切位置
+//     cardLeft: 32,                     // 身份卡距背景图左边多少像素（默认 32，不贴边）
+//     cardBottom: -28                   // 身份卡底部偏移，负值 = 下悬出背景图
+//   }
+//   背景照铺在顶部，身份卡悬浮压在它左下方，介绍卡在下方与身份卡左对齐。
+//   cardLeft 调大 = 身份卡往右移；调太大会盖住照片里的人，注意别越过人物的左边缘。
+//
+// 【想给某位好友旁边加人物立绘（库里、哈登这类）】照抄牛子这两行：
+//   characterImage: "images/friends/xxx.png",   // 已抠图的透明 PNG/WebP
+//   characterOptions: { scale: 1.3, right: 0, bottom: 0, footOffset: 3.8, mobileScale: 1 }
+//   scale       桌面缩放；right 距右侧百分比；bottom 底部像素偏移；
+//   footOffset  原图脚下透明留白百分比（向下补偿）；mobileScale 手机端缩放。
+//   版式会自动把右侧让给立绘，信息卡收在左侧。
+//
+// photo / cover / characterImage / tags 可以任意组合，位置都已按同一套模板预留好。
+//
+// 【其他】
+//   url           可选；好友的个人主页，填了才显示入口
+//   showOnHome    true 表示首页展示，最多按数组顺序取前 3 位
+// ════════════════════════════════════════════════════════════════════════
 
 const friends = [
   {
@@ -17,15 +55,14 @@ const friends = [
     avatar: "Q",
     photo: "images/friends/ljx.jpg",
     description: "萎逼、QQ",
+    tags: ["高中同学", "高中睡友"],
     bio: [
-      "高中同学、高中睡友。",
       "黎明杀机最佳军团代言人",
       "三角洲从不玩突击位之人",
       "大山中学zfh最享福之人",
       "排球的伙伴，篮球的浓眉"
     ],
     content: [
-      { type: "text", text: "高中同学、高中睡友。" },
       { type: "text", text: "黎明杀机最佳军团代言人" },
       { type: "text", text: "三角洲从不玩突击位之人" },
       { type: "text", text: "大山中学zfh最享福之人" },
@@ -77,22 +114,31 @@ const friends = [
     photo: "images/friends/fhm.jpg",
     photoPosition: "center 35%",
     description: "牢八、网安最后的深情",
-    bio: "初中同学、大学同学",
+    tags: ["初中同学", "大学同学"],
     url: " "
   },
   {
     id: "CSH233",
     showOnHome: false,
-    name: "大内哥",
-    avatar: "N",
+    name: "Henlin",
+    avatar: "H",
     photo: "images/friends/csh.jpg",
     cover: {
       src: "images/friends/csh.jpg",
       position: "center 10%",
-      mobilePosition: "center center"
+      mobilePosition: "center center",
+      cardLeft: 32,
+      cardBottom: -28
     },
-    description: "正黑旗刚果非洲黑人",
-    bio: "初中同学、香港人",
+    description: "大内哥",
+    tags: ["初中同学"],
+    bio: [
+      "香港人、非洲黑人",
+      "CS2第一指挥兼狙击手",
+      "Minin最佳CS2上分搭档",
+      "雅思口语7.5",
+      "纯血外国人",
+    ],
     url: " "
   },
   {
@@ -102,7 +148,20 @@ const friends = [
     avatar: "🐮",
     photo: "",
     description: "篮球队长",
-    bio: "小学同学、初中同学、大学同学",
+    tags: ["小学同学", "初中同学", "大学同学"],
+    characterImage: "images/friends/niuzi-harden-character.png",
+    characterOptions: { scale: 1.3, right: 0, bottom: 0, footOffset: 3.8, mobileScale: 1 },
+    bio: [
+      "Favourite player : James Harden",
+      "校队大前锋",
+      "2018年常规赛MVP",
+      "得分王、助攻王、最佳第六人",
+      "打爆虎扑奖",
+      "五年抗勇奖",
+      "NBA孔子奖",
+      "费城大庆典",
+      "错哥，我们登了"
+    ],
     url: " "
   }
 ];

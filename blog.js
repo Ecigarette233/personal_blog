@@ -319,50 +319,111 @@ function renderFriendContent(friend, container) {
     }));
 }
 
+// 同一个人物图组件用于所有好友，位置参数只接受有限数值，切换页面时重置。
+function renderFriendCharacter(friend, profile) {
+  const container = document.getElementById("friend-character");
+  const image = document.getElementById("friend-character-image");
+  profile.classList.remove("has-character");
+  container.hidden = true;
+  image.onload = null;
+  image.onerror = null;
+  image.removeAttribute("src");
+  const options = friend.characterOptions || {};
+  const settings = [
+    ["scale", 1, .5, 1.6, ""],
+    ["right", 0, 0, 12, "%"],
+    ["bottom", 0, -40, 80, "px"],
+    ["footOffset", 0, 0, 15, "%"],
+    ["mobileScale", 1, .6, 1.2, ""]
+  ];
+  settings.forEach(([key, fallback, min, max, unit]) => {
+    const value = Number.isFinite(options[key]) ? Math.min(max, Math.max(min, options[key])) : fallback;
+    profile.style.setProperty(`--character-${key}`, `${value}${unit}`);
+  });
+  const source = friendMediaSource(friend.characterImage);
+  if (!source) return;
+  image.onload = () => {
+    if (profile.dataset.friendId !== friend.id) return;
+    container.hidden = false;
+    profile.classList.add("has-character");
+  };
+  image.onerror = () => {
+    if (profile.dataset.friendId !== friend.id) return;
+    container.hidden = true;
+    profile.classList.remove("has-character");
+    image.removeAttribute("src");
+  };
+  image.src = source;
+}
+
+// 复用一份详情模板；空字段不占位，旧 description、bio 与 content 数据继续兼容。
 function renderFriendProfile(friend) {
   const profile = document.querySelector(".friend-profile");
   const profileHeader = document.querySelector(".friend-profile-header");
   const coverContainer = document.getElementById("friend-profile-cover");
-  const photoContainer = document.getElementById("friend-profile-photo");
+  const avatarElement = document.getElementById("friend-profile-avatar");
   profile.dataset.friendId = friend.id;
   profile.classList.remove("has-cover");
-  profileHeader.classList.remove("has-photo");
+  avatarElement.classList.remove("has-image");
+  profileHeader.classList.remove("has-photo-avatar");
   coverContainer.replaceChildren();
   coverContainer.hidden = true;
   coverContainer.style.removeProperty("--cover-position");
   coverContainer.style.removeProperty("--cover-position-mobile");
-  photoContainer.replaceChildren();
-  photoContainer.hidden = true;
+  profile.style.removeProperty("--cover-card-left");
+  profile.style.removeProperty("--cover-card-bottom");
 
-  document.getElementById("friend-profile-avatar").textContent = friend.avatar;
-  document.getElementById("friend-profile-name").textContent = friend.name;
-  document.getElementById("friend-profile-description").textContent = friend.description;
-  renderFriendContent(friend, document.getElementById("friend-profile-bio"));
+  const fields = [
+    ["friend-profile-avatar", friend.avatar],
+    ["friend-profile-name", friend.name],
+    ["friend-profile-description", friend.identity ?? friend.description]
+  ];
+  fields.forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    element.textContent = typeof value === "string" ? value.trim() : "";
+    element.hidden = !element.textContent;
+  });
+  profileHeader.classList.toggle("has-avatar", !avatarElement.hidden);
+  const tags = document.getElementById("friend-profile-tags");
+  tags.replaceChildren(...(Array.isArray(friend.tags) ? friend.tags : [])
+    .filter(tag => typeof tag === "string" && tag.trim())
+    .map(tag => {
+      const item = document.createElement("li");
+      item.textContent = tag.trim();
+      return item;
+    }));
+  tags.hidden = !tags.children.length;
+  const bio = document.getElementById("friend-profile-bio");
+  renderFriendContent(friend, bio);
+  // 关系标签和正文都在介绍卡里；两者都为空才隐藏整张卡，避免留下空玻璃卡。
+  bio.hidden = !bio.children.length;
+  document.getElementById("friend-profile-about").hidden = !bio.children.length && !tags.children.length;
+  renderFriendCharacter(friend, profile);
 
-  const renderLegacyPhoto = () => {
+  // 有具体照片时照片本身就是头像，删去紫色首字母头像；没有照片才回退到首字母。
+  const renderFriendAvatar = () => {
     if (profile.dataset.friendId !== friend.id || profile.classList.contains("has-cover")) return;
-    photoContainer.replaceChildren();
-    photoContainer.hidden = true;
-    profileHeader.classList.remove("has-photo");
-    const photo = createFriendImage(friend.photo, `${friend.name}的照片`, {
+    const photo = createFriendImage(friend.photo, `${friend.name}的头像`, {
       lazy: false,
       width: 176,
       height: 176,
       position: friend.photoPosition || "center"
     });
     if (!photo) return;
-    photo.onload = () => {
-      if (profile.dataset.friendId !== friend.id || photo.parentElement !== photoContainer) return;
-      photoContainer.hidden = false;
-      profileHeader.classList.add("has-photo");
-    };
+    const initial = avatarElement.textContent;
+    photo.className = "friend-profile-avatar-image";
     photo.onerror = () => {
-      if (photo.parentElement !== photoContainer) return;
-      photoContainer.hidden = true;
-      profileHeader.classList.remove("has-photo");
-      photo.remove();
+      if (photo.parentElement !== avatarElement) return;
+      avatarElement.classList.remove("has-image");
+      avatarElement.textContent = initial;
+      avatarElement.hidden = !avatarElement.textContent;
+      profileHeader.classList.remove("has-photo-avatar");
+      profileHeader.classList.toggle("has-avatar", !avatarElement.hidden);
     };
-    photoContainer.append(photo);
+    avatarElement.replaceChildren(photo);
+    avatarElement.classList.add("has-image");
+    avatarElement.hidden = false;
+    profileHeader.classList.add("has-avatar", "has-photo-avatar");
   };
 
   const cover = friend.cover && typeof friend.cover === "object" ? friend.cover : null;
@@ -374,30 +435,34 @@ function renderFriendProfile(friend) {
   if (coverImage) {
     coverContainer.style.setProperty("--cover-position", cover.position || "center");
     coverContainer.style.setProperty("--cover-position-mobile", cover.mobilePosition || cover.position || "center");
+    // 身份卡在背景图上的位置：cardLeft 为距背景图左边的像素（默认 32，不再贴边），
+    // cardBottom 为底部偏移，负值等于下悬出背景图。两者都可按好友单独调。
+    const clamp = (value, fallback, min, max) =>
+      Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+    profile.style.setProperty("--cover-card-left", `${clamp(cover.cardLeft, 32, 0, 160)}px`);
+    profile.style.setProperty("--cover-card-bottom", `${clamp(cover.cardBottom, -28, -60, 60)}px`);
     coverImage.onload = () => {
       if (profile.dataset.friendId !== friend.id || coverImage.parentElement !== coverContainer) return;
       coverContainer.hidden = false;
       profile.classList.add("has-cover");
-      photoContainer.replaceChildren();
-      photoContainer.hidden = true;
-      profileHeader.classList.remove("has-photo");
     };
     coverImage.onerror = () => {
       if (coverImage.parentElement !== coverContainer) return;
       coverImage.remove();
       coverContainer.hidden = true;
       profile.classList.remove("has-cover");
-      renderLegacyPhoto();
+      renderFriendAvatar();
     };
     coverContainer.append(coverImage);
   } else {
-    renderLegacyPhoto();
+    renderFriendAvatar();
   }
 
   const homepage = document.getElementById("friend-homepage");
   const hasHomepage = typeof friend.url === "string" && friend.url.trim() !== "";
   homepage.hidden = !hasHomepage;
   if (hasHomepage) homepage.href = friend.url.trim();
+  else homepage.removeAttribute("href");
 }
 
 // 分类与搜索同时生效，搜索范围包括标题、摘要和正文。

@@ -15,7 +15,7 @@
     <base href="/">
     <link rel="canonical" href="https://huangminjin.com/">
     <link rel="icon" href="images/littlechick.webp?v=20261005" type="image/webp">
-    <link rel="stylesheet" href="styles.css?v=20261006-brand-palette">
+    <link rel="stylesheet" href="styles.css?v=20261007-friend-mobile3">
   </head>
   <body>
     <div class="shell">
@@ -226,6 +226,7 @@
             <a class="back" href="/Friends">← 返回好友列表</a>
           </div>
           <article class="friend-profile">
+            <!-- 背景照片作为主要视觉元素，身份卡悬浮覆盖在它的左下边缘。 -->
             <div class="friend-profile-hero">
               <div class="friend-profile-cover" id="friend-profile-cover" hidden></div>
               <header class="friend-profile-header friend-profile-identity-card">
@@ -237,13 +238,16 @@
                     访问个人主页 <span aria-hidden="true">↗</span>
                   </a>
                 </div>
-                <div class="friend-profile-photo" id="friend-profile-photo" hidden></div>
               </header>
             </div>
-            <section class="friend-profile-about">
-              <h2>关于 TA</h2>
+            <!-- 介绍内容独立成卡：关系标签与正文一起放在卡内，身份卡只留头像、姓名和副标题。 -->
+            <section class="friend-profile-about" id="friend-profile-about" aria-label="关于 TA">
+              <ul class="friend-profile-tags" id="friend-profile-tags" aria-label="关系标签" hidden></ul>
               <div class="friend-profile-bio" id="friend-profile-bio"></div>
             </section>
+            <div class="friend-character" id="friend-character" aria-hidden="true" hidden>
+              <img class="friend-character-image" id="friend-character-image" alt="" decoding="async" draggable="false" width="1024" height="1536">
+            </div>
           </article>
         </section>
         <section id="diary-view" hidden class="fade-in">
@@ -303,11 +307,11 @@
       </main>
     </div>
     <script src="diaries.js?v=20261005-journal" defer></script>
-    <script src="friends.js?v=20261005-profile-balance" defer></script>
+    <script src="friends.js?v=20261007-friend-card2" defer></script>
     <script src="projects.js?v=20261004-quality2" defer></script>
     <script src="journey.js?v=20261006-brand-palette" defer></script>
     <script src="skills.js?v=20261005-cn" defer></script>
-    <script src="blog.js?v=20261005-profile-balance" defer></script>
+    <script src="blog.js?v=20261007-friend-card2" defer></script>
   </body>
 </html>
 
