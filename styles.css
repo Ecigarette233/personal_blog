@@ -878,21 +878,28 @@ h1 {
 }
 
 @media (max-width: 900px) {
-  /* 手机端：两张卡收在左侧，人物站在右侧介绍卡旁边的空白处，贴住内容底部。
-     页面高度由卡片撑开（flex: none，不再拉伸），姓名回到头像右边。
-     宽度用 vw 而不是百分比：百分比在 min-height 里无法参与解析。 */
+  /* 手机端：两张卡整宽，立绘放大后站在玻璃卡前面、脚底压住内容底部。
+     允许人物压住部分正文，换取视觉冲击力。
+     页面高度由卡片撑开（flex: none，不再拉伸）；宽度用 vw 而不是百分比，
+     因为百分比在 min-height 里无法参与解析。 */
   .friend-profile.has-character {
-    --character-mobile-width: calc(clamp(150px, 48vw, 235px) * var(--character-mobileScale, 1));
+    --character-mobile-width: calc(clamp(200px, 62vw, 300px) * var(--character-mobileScale, 1));
     --character-mobile-height: calc(var(--character-mobile-width) * 1.5);
-    --info-card-width: calc(100% - var(--character-mobile-width) - 16px);
-    flex: none;
+    --info-card-width: 100%;
+    /* 保持 flex: 1（继承桌面规则）让资料区撑满可用高度，
+       这样立绘 bottom: 0 的脚底就落在页面底部，而不是卡片下沿。 */
     min-height: var(--character-mobile-height);
   }
-  /* 身份卡窄了也要保持「头像在左、姓名副标题在右」的一行排布。 */
+  /* 身份卡整宽后仍是「头像在左、姓名副标题在右」一行，并压在立绘之上，名字不会被挡。 */
   .friend-profile.has-character .friend-profile-header {
+    z-index: 3;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 13px;
   }
+  /* 立绘站在玻璃卡前面：高于介绍卡、低于身份卡。 */
+  .friend-profile.has-character .friend-character { z-index: 2; }
+  /* 脚底贴住内容底部（bottom: 0）；图片框与 2:3 原图等比，
+     配合桌面已有的 object-position: bottom center，脚下不会留缝。 */
   .friend-character {
     top: auto;
     bottom: 0;

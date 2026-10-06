@@ -54,7 +54,7 @@ const friends = [
     name: "萎哥",
     avatar: "Q",
     photo: "images/friends/ljx.jpg",
-    description: "萎逼、QQ",
+    description: "QQ、萎",
     tags: ["高中同学", "高中睡友"],
     bio: [
       "黎明杀机最佳军团代言人",
@@ -77,6 +77,7 @@ const friends = [
     avatar: "H",
     photo: "",
     description: "邓哥、哈邓",
+    tags: [ "高中同学"],
     bio: [
       "错哥，我们登了",
       "hytDADDY",
@@ -90,9 +91,16 @@ const friends = [
     avatar: "HRS",
     photo: "images/friends/czj.jpg",
     description: "天使之翼",
+    tags: [ "高中同学"],
     bio: [
-      "最近在健身，听说已经练出天使之翼",
-      "动辄舔狗"
+      "天使之翼降临，凡人恐惧我吧",
+      "鬼背、鬼脑",
+      "动辄舔狗、三班最爱动辄之人",
+      "成都必吃榜top1",
+      "北境之王(不打球版)",
+      "欧内之手",
+      "最爱东北搓澡之人",
+      "ChatCZJ、百万token消耗一包压缩饼干",
     ],
     url: " "
   },
@@ -103,7 +111,13 @@ const friends = [
     avatar: "DZ",
     photo: "",
     description: "东京开墓尸",
-    bio: "Harrisang必玩榜top1",
+    tags: [ "高中同学"],
+    bio: [
+      "Harrisang必玩榜top1",
+      "最尊重老詹之人",
+      "卢卡东契奇Mini版",
+      "自述打球像卢卡东77",
+    ],
     url: " "
   },
   {
@@ -113,8 +127,15 @@ const friends = [
     avatar: "8",
     photo: "images/friends/fhm.jpg",
     photoPosition: "center 35%",
-    description: "牢八、网安最后的深情",
+    description: "牢八",
     tags: ["初中同学", "大学同学"],
+    bio: [
+      "网络空间安全专业",
+      "深圳压抑榜top1",
+      "老詹粉丝",
+      "曾经的湖蜜"
+
+    ],
     url: " "
   },
   {
@@ -134,10 +155,12 @@ const friends = [
     tags: ["初中同学"],
     bio: [
       "香港人、非洲黑人",
-      "CS2第一指挥兼狙击手",
-      "Minin最佳CS2上分搭档",
+      "CS2历史第一指挥兼狙击手",
+      "最佳CS2上分搭档",
       "雅思口语7.5",
       "纯血外国人",
+      "香港全额奖学金",
+      "上过电视",
     ],
     url: " "
   },
@@ -153,7 +176,7 @@ const friends = [
     characterOptions: { scale: 1.3, right: 0, bottom: 0, footOffset: 3.8, mobileScale: 1 },
     bio: [
       "Favourite player : James Harden",
-      "校队大前锋",
+      "院队小前锋",
       "2018年常规赛MVP",
       "得分王、助攻王、最佳第六人",
       "打爆虎扑奖",
@@ -163,5 +186,90 @@ const friends = [
       "错哥，我们登了"
     ],
     url: " "
+  },
+  {
+    id: "yanger",
+    showOnHome: false,
+    name: "yanger",
+    avatar: "yan",
+    photo: "",
+    description: "",
+    tags: ["高中同学"],
+    characterImage: "",
+    bio: [
+      "",
+    ],
+    url: " "
+  },
+  {
+    id: "enbide",
+    showOnHome: false,
+    name: "chenxin",
+    avatar: "chen",
+    photo: "",
+    description: "大帝",
+    tags: ["高中同学"],
+    characterImage: "",
+    bio: [
+      "石头人",
+    ],
+    url: " "
+  },
+  {
+    id: "giao",
+    showOnHome: false,
+    name: "Agiao",
+    avatar: "giao",
+    photo: "",
+    description: "",
+    tags: ["初中同学"],
+    characterImage: "",
+    bio: [
+      "",
+    ],
+    url: " "
+  },
+  {
+    id: "dcx",
+    showOnHome: false,
+    name: "dcx",
+    avatar: "💩",
+    photo: "",
+    description: "",
+    tags: ["初中同学"],
+    characterImage: "",
+    bio: [
+      "go转洲转瓦",
+    ],
+    url: " "
+  },
+  {
+    id: "",
+    showOnHome: false,
+    name: "",
+    avatar: "",
+    photo: "",
+    description: "",
+    tags: [""],
+    characterImage: "",
+    bio: [
+      "",
+    ],
+    url: " "
   }
 ];
+
+  // {
+  //   id: "",
+  //   showOnHome: false,
+  //   name: "",
+  //   avatar: "",
+  //   photo: "",
+  //   description: "",
+  //   tags: [""],
+  //   characterImage: "",
+  //   bio: [
+  //     "",
+  //   ],
+  //   url: " "
+  // }
