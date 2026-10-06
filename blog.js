@@ -1,5 +1,5 @@
 ﻿// 用途：渲染博客各页面，维护路由、日记筛选、搜索、分页和文章前后篇导航。
-// 依赖：diaries.js、friends.js、projects.js、journey.js 和 skills.js 必须先加载。
+// 依赖：diaries.js、friends.js、projects.js、events.js、journey.js 和 skills.js 必须先加载。
 // 本文件负责内容渲染、History API 路由、日记筛选与分页。
 
 // 页面元素与筛选状态。
@@ -26,7 +26,10 @@ function getSortedDiaries() {
       category: typeof post.category === "string" && post.category.trim() ? post.category : "未分类",
       excerpt: typeof post.excerpt === "string" ? post.excerpt : "",
       body: (Array.isArray(post.body) ? post.body : [post.body])
-        .filter(paragraph => typeof paragraph === "string")
+        .filter(block => typeof block === "string" || (
+          block && typeof block === "object" && block.type === "image"
+          && typeof block.src === "string" && block.src.trim()
+        ))
     }))
     .sort((first, second) => second.date.localeCompare(first.date));
 }
@@ -69,33 +72,81 @@ function renderPagination(id, page, total, linkForPage) {
     <div class="page-controls">${link(page - 1, "上一页", page === 1)}${numbers}${link(page + 1, "下一页", page === total)}</div>`;
 }
 
+// 图片块不参与字符计数；文字仍优先按完整段落分页。
+function diaryBlockText(block) {
+  if (typeof block === "string") return block;
+  if (!block || typeof block !== "object") return "";
+  return [block.alt, block.caption].filter(value => typeof value === "string").join(" ");
+}
+
 // 长段落优先在标点处断开；使用 Unicode 字符切分，保留所有正文内容。
 function paginateBody(body) {
   const pages = [];
-  let paragraphs = [];
+  let blocks = [];
   let length = 0;
   const flush = () => {
-    if (paragraphs.length) pages.push(paragraphs);
-    paragraphs = [];
+    if (blocks.length) pages.push(blocks);
+    blocks = [];
     length = 0;
   };
-  body.forEach(paragraph => {
-    let characters = Array.from(paragraph);
+  body.forEach(block => {
+    if (typeof block !== "string") {
+      if (length > ARTICLE_PAGE_SIZE * .85) flush();
+      blocks.push(block);
+      return;
+    }
+
+    let characters = Array.from(block);
     if (length + characters.length > ARTICLE_PAGE_SIZE) flush();
     while (characters.length > ARTICLE_PAGE_SIZE) {
       let split = ARTICLE_PAGE_SIZE;
       for (let i = ARTICLE_PAGE_SIZE - 1; i >= ARTICLE_PAGE_SIZE / 2; i--) {
         if (/[。！？；.!?;\s]/u.test(characters[i])) { split = i + 1; break; }
       }
-      paragraphs.push(characters.slice(0, split).join(""));
+      blocks.push(characters.slice(0, split).join(""));
       flush();
       characters = characters.slice(split);
     }
-    paragraphs.push(characters.join(""));
+    blocks.push(characters.join(""));
     length += characters.length;
   });
   flush();
   return pages.length ? pages : [[]];
+}
+
+// 正文文字使用 textContent；图片只读取配置字段，加载失败时移除整个图片区。
+function renderArticleBody(blocks) {
+  const container = document.getElementById("article-body");
+  const fragment = document.createDocumentFragment();
+
+  blocks.forEach(block => {
+    if (typeof block === "string") {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = block;
+      fragment.append(paragraph);
+      return;
+    }
+
+    if (!block || block.type !== "image" || typeof block.src !== "string") return;
+    const figure = document.createElement("figure");
+    figure.className = "article-media";
+    const image = document.createElement("img");
+    image.src = block.src;
+    image.alt = typeof block.alt === "string" ? block.alt : "";
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.addEventListener("error", () => figure.remove(), { once: true });
+    figure.append(image);
+
+    if (typeof block.caption === "string" && block.caption.trim()) {
+      const caption = document.createElement("figcaption");
+      caption.textContent = block.caption;
+      figure.append(caption);
+    }
+    fragment.append(figure);
+  });
+
+  container.replaceChildren(fragment);
 }
 
 // 日记内容作为文本展示，避免内容中的 HTML 被执行。
@@ -128,7 +179,45 @@ function renderPostCard(post) {
   `;
 }
 
-// 首页展示最新三篇日记；侧边栏的重大事件在 HTML 中单独维护。
+// 重大事件只保存数据引用；标题、日期和链接从日记或项目数据中读取，避免重复维护。
+function renderMajorEvents() {
+  const container = document.getElementById("major-events");
+  const fragment = document.createDocumentFragment();
+  const eventList = Array.isArray(majorEvents) ? majorEvents : [];
+
+  eventList.forEach(event => {
+    if (!event || typeof event !== "object") return;
+    let item;
+    let href;
+
+    if (event.kind === "diary") {
+      item = getSortedDiaries().find(post => post.id === event.ref);
+      if (item) href = postLink(item);
+    } else if (event.kind === "project") {
+      item = (Array.isArray(projects) ? projects : []).find(project => project.id === event.ref);
+      if (item) href = "/Projects";
+    }
+    if (!item || !href) return;
+
+    const link = document.createElement("a");
+    link.className = "side-post";
+    link.href = href;
+    const time = document.createElement("time");
+    const date = typeof item.date === "string" ? item.date : "";
+    if (date) time.dateTime = date;
+    time.textContent = typeof event.label === "string" && event.label.trim()
+      ? event.label.trim()
+      : date;
+    const title = document.createElement("p");
+    title.textContent = typeof item.title === "string" ? item.title : item.name;
+    link.append(time, title);
+    fragment.append(link);
+  });
+
+  container.replaceChildren(fragment);
+}
+
+// 首页展示最新三篇日记。
 function renderRecentPosts() {
   const recentPosts = getSortedDiaries().slice(0, 3);
   document.getElementById("recent-posts").innerHTML = recentPosts
@@ -471,7 +560,7 @@ function renderArchive() {
   const matches = getSortedDiaries().filter(post => {
     const matchesCategory = selectedCategory === "全部"
       || post.category === selectedCategory;
-    const text = [post.title, post.excerpt, ...post.body]
+    const text = [post.title, post.excerpt, ...post.body.map(diaryBlockText)]
       .join(" ").toLocaleLowerCase();
     return matchesCategory && text.includes(query);
   });
@@ -504,8 +593,7 @@ function renderArticle(post, requestedPage) {
     <span class="tag">${escapeHtml(post.category)}</span>
     <span>黄敏津</span>
   `;
-  document.getElementById("article-body").innerHTML = pages[page - 1]
-    .map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join("");
+  renderArticleBody(pages[page - 1]);
   renderPagination("article-pagination", page, pages.length, pageLink);
 
   const previousLink = index > 0
@@ -628,6 +716,7 @@ function updateFilters() {
 }
 
 function initialize() {
+  renderMajorEvents();
   renderRecentPosts();
   renderFriends();
   renderSkills();

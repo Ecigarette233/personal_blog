@@ -13,7 +13,7 @@
 `index.html`（保留查询参数）。例如 Nginx 可在站点的 `location /` 中设置
 `try_files $uri $uri/ /index.html;`。仅支持静态文件、没有路由回退的托管服务需要另配重写规则。
 
-日记内容在 `diaries.js`，好友资料在 `friends.js`，项目内容在 `projects.js`。
+日记内容在 `diaries.js`，好友资料在 `friends.js`，项目内容在 `projects.js`；侧边栏重大事件在 `events.js` 中引用日记或项目的 `id`。
 成长轨迹内容和可复用卡片组件在 `journey.js`，新增对象后会自动按时间从新到旧排列。
 首页会自动展示最近三篇日记、最新三个成长节点和首个项目；完整内容仍由各自页面展示。
 技能与学习内容在 `skills.js`，分为“正在使用”“正在学习”和“专业基础”，可新增分组或修改各组标签。

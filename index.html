@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <!-- 页面结构由本文件维护，样式在 styles.css，渲染与 History API 路由在 blog.js。
-     diaries.js、friends.js、projects.js、journey.js、skills.js 分别维护日记、好友、项目、成长轨迹和技能内容。 -->
+     diaries.js、friends.js、projects.js、events.js、journey.js、skills.js 分别维护日记、好友、项目、重大事件、成长轨迹和技能内容。 -->
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8">
@@ -15,7 +15,7 @@
     <base href="/">
     <link rel="canonical" href="https://huangminjin.com/">
     <link rel="icon" href="images/littlechick.webp?v=20261005" type="image/webp">
-    <link rel="stylesheet" href="styles.css?v=20261007-friend-mobile5">
+    <link rel="stylesheet" href="styles.css?v=20261007-diary-media1">
   </head>
   <body>
     <div class="shell">
@@ -47,16 +47,7 @@
         <div class="side-heading">
           <span>重大事件</span>
         </div>
-        <div class="side-posts" aria-label="重大事件">
-          <a class="side-post" href="/Post/build-a-personal-blog">
-            <time datetime="2026-10">2026.10 / 日记</time>
-            <p>个人博客搭建记录</p>
-          </a>
-          <a class="side-post" href="/Projects">
-            <time datetime="2026">ONGOING / 项目</time>
-            <p>个人数字花园持续维护</p>
-          </a>
-        </div>
+        <div class="side-posts" id="major-events" aria-label="重大事件"></div>
         <div class="side-bottom">
           <div class="side-contact">
             <span class="side-contact-icon" aria-hidden="true">
@@ -306,12 +297,13 @@
         </footer>
       </main>
     </div>
-    <script src="diaries.js?v=20261005-journal" defer></script>
+    <script src="diaries.js?v=20261007-transfer-diary1" defer></script>
     <script src="friends.js?v=20261007-friend-card2" defer></script>
     <script src="projects.js?v=20261004-quality2" defer></script>
+    <script src="events.js?v=20261007-major-events1" defer></script>
     <script src="journey.js?v=20261006-brand-palette" defer></script>
     <script src="skills.js?v=20261005-cn" defer></script>
-    <script src="blog.js?v=20261007-friend-card2" defer></script>
+    <script src="blog.js?v=20261007-events-diary1" defer></script>
   </body>
 </html>
 

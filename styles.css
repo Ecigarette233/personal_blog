@@ -1185,6 +1185,30 @@ input[type=search] {
   white-space: pre-wrap;
 }
 
+.article-media {
+  margin: 8px 0 32px;
+}
+
+.article-media img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 280px);
+  max-height: 72vh;
+  margin: 0 auto;
+  border: 1px solid rgba(var(--brand-blue-rgb), .18);
+  border-radius: 16px;
+  box-shadow: 0 16px 38px rgba(54, 72, 145, .12);
+}
+
+.article-media figcaption {
+  max-width: 520px;
+  margin: 10px auto 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+
 .article-nav {
   margin-top: 45px;
   padding-top: 20px;
