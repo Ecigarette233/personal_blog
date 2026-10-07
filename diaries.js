@@ -14,7 +14,7 @@ const diaries = [
     "title": "3月30日生日会",
     "date": "2026-03-30",
     "category": "生活",
-    "excerpt": "记录今年 3 月 30 日的生日会。正文待补充。",
+    "excerpt": "记录2026年 3 月 30 日的生日会。",
     "file": "content/posts/march-30-birthday-party.md"
   },
   {
@@ -22,7 +22,7 @@ const diaries = [
     "title": "购买新显示器带来的欣喜",
     "date": "2026-07",
     "category": "生活",
-    "excerpt": "记录买到新显示器的欣喜。正文待补充。",
+    "excerpt": "买完显示器后，我后悔了。",
     "file": "content/posts/new-monitor-joy.md"
   },
   {
@@ -30,7 +30,7 @@ const diaries = [
     "title": "租房日记",
     "date": "2026-08-30",
     "category": "生活",
-    "excerpt": "记录这次租房。正文待补充。",
+    "excerpt": "租房齁逼多。",
     "file": "content/posts/renting-a-home-diary.md"
   },
   {
@@ -49,12 +49,4 @@ const diaries = [
     "excerpt": "整理本学期的学习重点、时间分配和阶段目标。",
     "file": "content/posts/sophomore-study-plan.md"
   },
-  {
-    "id": "weekly-study-and-exercise-log",
-    "title": "一周的学习与运动记录",
-    "date": "2026-09-28",
-    "category": "生活",
-    "excerpt": "记录一周内的课程、编程练习、运动和时间调整。",
-    "file": "content/posts/weekly-study-and-exercise-log.md"
-  }
 ];

@@ -9,6 +9,6 @@ const majorEvents = [
   {
     kind: "project",
     ref: "personal-digital-garden",
-    label: "ONGOING / 项目"
+    label: "2026.10 / 项目"
   }
 ];
