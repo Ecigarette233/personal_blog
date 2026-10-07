@@ -76,9 +76,9 @@ function formatJourneyDate(date) {
 
 // 仅计算视觉颜色；相邻线段共享接点，蓝 / 紫 / 粉与 CSS 主题色一致。
 function journeyLineColor(progress) {
-  const blue = [65, 113, 224];
-  const violet = [129, 92, 231];
-  const pink = [232, 91, 159];
+  const blue = [62, 112, 220];
+  const violet = [135, 87, 237];
+  const pink = [238, 121, 190];
   const [start, end, amount] = progress <= 0.55
     ? [blue, violet, progress / 0.55]
     : [violet, pink, (progress - 0.55) / 0.45];
