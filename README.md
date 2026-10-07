@@ -27,7 +27,7 @@
 
 ```json
 {
-  "characterImage": "images/friends/niuzi-harden-character.png",
+  "characterImage": "images/friends/niuzi-harden-character.webp",
   "characterOptions": {
     "scale": 1.3,
     "right": 0,
