@@ -19,6 +19,7 @@ const skillGroups = [
       "Linux",
       "Java",
       "计算机网络",
+      "数据结构",
       "STL"
     ]
   },

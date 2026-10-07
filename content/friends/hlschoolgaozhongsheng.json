@@ -9,6 +9,14 @@
     "高中同学",
     "高中睡友"
   ],
+  "characterImage": "images/friends/ljx-character.png",
+  "characterOptions": {
+    "scale": 1.3,
+    "right": 0,
+    "bottom": 0,
+    "footOffset": 0,
+    "mobileScale": 1
+  },
   "bio": [
     "黎明杀机最佳军团代言人",
     "三角洲从不玩突击位之人",
