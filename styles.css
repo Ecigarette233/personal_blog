@@ -912,6 +912,20 @@ h1 {
   }
 }
 
+/* 宽翼立绘在窄屏上接在资料之后，保留完整翅膀与小狗，不覆盖文字。 */
+@media (max-width: 900px) {
+  .friend-profile[data-friend-id="angel-chen"].has-character .friend-character {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(100%, var(--character-mobile-width));
+    height: auto;
+    aspect-ratio: 2 / 3;
+    margin: 20px auto 0;
+  }
+  .friend-profile[data-friend-id="angel-chen"] .friend-character-image { transform: none; }
+}
+
 .friend-content-image,
 .friend-content-gallery figure {
   margin: 22px 0 0;

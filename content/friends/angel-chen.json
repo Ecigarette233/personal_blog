@@ -18,5 +18,13 @@
     "最爱东北搓澡之人",
     "ChatCZJ、百万token消耗一包压缩饼干"
   ],
-  "url": " "
+  "url": " ",
+  "characterImage": "images/friends/harrisang-angel-character.png",
+  "characterOptions": {
+    "scale": 1.3,
+    "right": 0,
+    "bottom": 0,
+    "footOffset": 6,
+    "mobileScale": 1
+  }
 }
