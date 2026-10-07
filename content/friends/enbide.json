@@ -8,16 +8,13 @@
   "tags": [
     "高中同学"
   ],
-  "characterImage": "images/friends/enbide-thing-character.webp",
-  "characterOptions": {
-    "scale": 1.3,
-    "right": 0,
-    "bottom": 0,
-    "footOffset": 2.4,
-    "mobileScale": 1
-  },
+  "characterImage": "",
   "bio": [
-    "石头人"
+    "石头人",
+    "画廊学校第一中锋",
+    "最爱慕Harrisang之人",
+    "你的心有一道墙",
+    "元旦晚会开腔被夺麦之人"
   ],
   "url": " "
 }
